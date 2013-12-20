@@ -48,7 +48,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.nullpointerengineering.SalesTax</mainClass>
+                            <mainClass>com.nullpointerengineering.MarkupCalculator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

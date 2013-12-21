@@ -23,18 +23,21 @@ public class OrderCollectionBuilderFromFile implements OrderCollectionBuilder {
     public Collection<?> build() throws IOException {
         Collection<String> orderCollection = new HashSet<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName))) {
-            orderCollection.add(readThreeLines(fileReader));
+            orderCollection.add(readOrder(fileReader));
+            if (fileReader.readLine() != null) {
+                orderCollection.add(readOrder(fileReader));
+            }
         }
         return orderCollection;
     }
 
-    private String readThreeLines(BufferedReader reader) throws IOException {
+    private String readOrder(BufferedReader reader) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         for (int i =0 ; i < 3; i++) {
             line = reader.readLine();
             if (line == null) {
-                throw new IOException(String.format("Error parsing line %s", i));
+                throw new IOException("Order parsing error: incomplete order");
             } else {
                 stringBuilder.append(line);
             }

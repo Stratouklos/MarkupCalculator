@@ -10,6 +10,6 @@ import java.util.Collection;
  */
 public interface OrderCollectionBuilder {
 
-    public Collection<?> build() throws IOException;
+    public Collection<?> build() throws Exception;
 
 }

@@ -1,5 +1,6 @@
 package com.nullpointerengineering.input;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -9,6 +10,6 @@ import java.util.Collection;
  */
 public interface OrderCollectionBuilder {
 
-    public Collection<?> build();
+    public Collection<?> build() throws IOException;
 
 }

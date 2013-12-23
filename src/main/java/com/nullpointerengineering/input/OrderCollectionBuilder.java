@@ -1,5 +1,7 @@
 package com.nullpointerengineering.input;
 
+import com.nullpointerengineering.model.Order;
+
 import java.util.Collection;
 
 /**
@@ -9,6 +11,6 @@ import java.util.Collection;
  */
 public interface OrderCollectionBuilder {
 
-    public Collection<?> build() throws Exception;
+    public Collection<? extends Order> build() throws Exception;
 
 }

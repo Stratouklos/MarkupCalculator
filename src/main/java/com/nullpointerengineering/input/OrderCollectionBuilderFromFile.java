@@ -25,17 +25,15 @@ public class OrderCollectionBuilderFromFile implements OrderCollectionBuilder {
     public Collection<? extends Order> build() throws IOException {
         Collection<Order> orderCollection = new HashSet<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName))) {
-            orderCollection.add(bindOrder(fileReader));
+            orderCollection.add(bindOrder(readThreeLinesOrThrowException(fileReader)));
             if (fileReader.readLine() != null) {
-                orderCollection.add(bindOrder(fileReader));
+                orderCollection.add(bindOrder(readThreeLinesOrThrowException(fileReader)));
             }
         }
         return orderCollection;
     }
 
-    private Order bindOrder(BufferedReader reader) throws IOException {
-        String[] lines = readThreeLinesOrThrowException(reader);
-
+    private Order bindOrder(String[] lines) throws IOException {
         String orderValue = lines[0].substring(1);
         int workers =  Integer.valueOf(lines[1].replaceAll(" person| people", ""));
         String type = lines[2];

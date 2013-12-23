@@ -61,4 +61,12 @@ public class OrderTest {
         assertEquals(order1.hashCode(), order2.hashCode());
     }
 
+    @Test
+    public void testEqualsFunction() {
+        Order order1 = Order.newOrder("12223.22", 1, "food");
+        Object order2 = Order.newOrder("12223.22", 1, "food");
+
+        assertEquals(order1, order2);
+    }
+
 }

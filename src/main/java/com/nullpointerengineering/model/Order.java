@@ -50,6 +50,17 @@ public class Order {
     }
 
     @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (! (object instanceof Order)) return false;
+        Order that = (Order) object;
+
+        return this.getType().equals(that.getType()) &&
+               this.getWorkers() == that.getWorkers() &&
+               this.getOrderValue().equals(that.getOrderValue());
+    }
+
+    @Override
     public int hashCode() {
         int hash = 1;
         hash = hash * 42 + workers;

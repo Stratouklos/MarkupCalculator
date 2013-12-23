@@ -1,5 +1,6 @@
 package com.nullpointerengineering.input;
 
+import com.nullpointerengineering.model.Order;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -8,6 +9,7 @@ import org.junit.runners.JUnit4;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -41,6 +43,14 @@ public class OrderCollectionBuilderFromFileTest {
     }
 
     @Test
+    public void readValueCorrectly() throws Exception {
+        OrderCollectionBuilderFromFile dataReaderUnderTest = new OrderCollectionBuilderFromFile(ONE_ORDER);
+        Order readOrder = dataReaderUnderTest.build().iterator().next();
+        BigDecimal expectedValue = new BigDecimal("1299.99");
+        assertThat(readOrder.getOrderValue(), is(expectedValue));
+    }
+
+    @Test
     public void fileNotFoundTest() throws Exception {
         OrderCollectionBuilderFromFile dataReaderUnderTest = new OrderCollectionBuilderFromFile(FILE_NOT_FOUND);
         expectedException.expect(FileNotFoundException.class);
@@ -54,6 +64,5 @@ public class OrderCollectionBuilderFromFileTest {
         expectedException.expectMessage("Order parsing error: incomplete order");
         dataReaderUnderTest.build();
     }
-
 
 }

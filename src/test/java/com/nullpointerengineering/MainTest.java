@@ -14,9 +14,10 @@ public class MainTest {
     @Ignore
     public void mainTest() {
         /*
-        String input = "Some input"
-        OrderCollectionBuilder orderBuilder = new OrderCollectionBuilderFromFile(input)
-        Collection<Order> orders = orderBuilder.build()
+        LineReaderFromFile reader = new LineReaderFromFile(fileName)
+        OrderParser parser = new ThreeLineOrderParser();
+        reader.readIntoParser(parser);
+        Collection<Order> orders = parser.getOrders()
         MarkupCalculator calculator = new MarkupCalculator(orders);
         String output = calculator.calculateMarkup();
         System.out.print(output)

@@ -7,10 +7,11 @@ import java.util.Collection;
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
- * Build collections of orders
+ * A parser for orders
  */
-public interface OrderCollectionBuilder {
+public interface OrderParser {
 
-    public Collection<? extends Order> build() throws Exception;
+    void parse(String dataLine);
 
+    Collection<Order> buildCollection();
 }

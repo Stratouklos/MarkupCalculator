@@ -1,6 +1,7 @@
 package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.model.Order;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,6 +34,7 @@ public class OrderParsingModuleTest {
     LineReaderFromFile lineReaderFromFile;
 
     @Test
+    @Ignore
     public void readOneOrder() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
         lineReaderFromFile.readIntoParser(parser);
@@ -41,6 +43,7 @@ public class OrderParsingModuleTest {
     }
 
     @Test
+    @Ignore
     public void readTwoOrders() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(TWO_ORDERS);
         lineReaderFromFile.readIntoParser(parser);
@@ -49,6 +52,7 @@ public class OrderParsingModuleTest {
     }
 
     @Test
+    @Ignore
     public void readValueCorrectly() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
         lineReaderFromFile.readIntoParser(parser);
@@ -58,6 +62,7 @@ public class OrderParsingModuleTest {
     }
 
     @Test
+    @Ignore
     public void readFromIncompleteData() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(INCOMPLETE_ORDER);
         expectedException.expect(IOException.class);

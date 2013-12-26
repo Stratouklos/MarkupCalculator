@@ -6,6 +6,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
+import org.mockito.verification.VerificationMode;
 
 import java.io.FileNotFoundException;
 
@@ -19,7 +21,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(JUnit4.class)
 public class LineReaderFromFileTest {
 
-    public static final String ONE_ORDER = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order";
+    private static final String ONE_ORDER = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order";
+    private static final VerificationMode ONCE = VerificationModeFactory.times(1);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -30,11 +33,10 @@ public class LineReaderFromFileTest {
     public void readOneOrder() throws Exception {
         LineReaderFromFile lineReader = new LineReaderFromFile(ONE_ORDER);
         lineReader.readIntoParser(mockParser);
-        verify(mockParser).parse("$1299.99");
-        verify(mockParser).parse("3 people");
-        verify(mockParser).parse("food");
+        verify(mockParser, ONCE).parse("$1299.99");
+        verify(mockParser, ONCE).parse("3 people");
+        verify(mockParser, ONCE).parse("food");
     }
-
 
     @Test
     public void fileNotFoundTest() throws Exception {

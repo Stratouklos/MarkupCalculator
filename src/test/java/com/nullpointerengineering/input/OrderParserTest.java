@@ -96,12 +96,6 @@ public class OrderParserTest {
         expectedException.expectMessage(SET_FIELDS_ONCE_ERROR);
         orderParserUnderTest.parse("drugs");
     }
-    @Test
-    public void illegalLineFormatTest() {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(ILLEGAL_LINE_FORMAT_ERROR);
-        orderParserUnderTest.parse("3 ppl");
-    }
 
     @Test
     public void parseIncompleteOrderTest() {
@@ -111,6 +105,13 @@ public class OrderParserTest {
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(INCOMPLETE_DATA_ERROR);
         orderParserUnderTest.getOrders();
+    }
+
+    @Test
+    public void illegalLineFormatTest() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(ILLEGAL_LINE_FORMAT_ERROR);
+        orderParserUnderTest.parse("$1000.007");
     }
 
 }

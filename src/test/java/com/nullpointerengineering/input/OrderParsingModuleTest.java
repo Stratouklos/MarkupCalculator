@@ -1,17 +1,16 @@
 package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.model.Order;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+import static com.nullpointerengineering.input.OrderParser.INCOMPLETE_DATA_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -34,39 +33,36 @@ public class OrderParsingModuleTest {
     LineReaderFromFile lineReaderFromFile;
 
     @Test
-    @Ignore
     public void readOneOrder() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
         lineReaderFromFile.readIntoParser(parser);
-        Collection<? super Order> orders = parser.buildCollection();
+        Collection<? super Order> orders = parser.getOrders();
         assertThat(orders.size(), is(1));
     }
 
     @Test
-    @Ignore
     public void readTwoOrders() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(TWO_ORDERS);
         lineReaderFromFile.readIntoParser(parser);
-        Collection<? super Order> orders = parser.buildCollection();
+        Collection<? super Order> orders = parser.getOrders();
         assertThat(orders.size(), is(2));
     }
 
     @Test
-    @Ignore
     public void readValueCorrectly() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
         lineReaderFromFile.readIntoParser(parser);
-        Order readOrder = parser.buildCollection().iterator().next();
+        Order readOrder = parser.getOrders().iterator().next();
         BigDecimal expectedValue = new BigDecimal("1299.99");
         assertThat(readOrder.getOrderValue(), is(expectedValue));
     }
 
     @Test
-    @Ignore
     public void readFromIncompleteData() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(INCOMPLETE_ORDER);
-        expectedException.expect(IOException.class);
-        expectedException.expectMessage("Order parsing error: incomplete order");
         lineReaderFromFile.readIntoParser(parser);
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectMessage(INCOMPLETE_DATA_ERROR);
+        parser.getOrders();
     }
 }

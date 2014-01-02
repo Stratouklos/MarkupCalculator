@@ -14,8 +14,8 @@ public class FlatMarkupRule implements Rule {
 
     public static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
 
-    public FlatMarkupRule(BigDecimal markupInPercentage) {
-        this.markup = markupInPercentage.divide(ONE_HUNDRED);
+    public FlatMarkupRule(BigDecimal markupPercentage) {
+        this.markup = markupPercentage.divide(ONE_HUNDRED);
     }
 
     @Override

@@ -70,4 +70,25 @@ public class FlatMarkupRuleTest {
         BigDecimal expected = new BigDecimal("3000.30");
         assertThat(actual, is(expected));
     }
+
+    @Test
+    public void testPointZeroOnePercent() {
+        ruleUnderTest = new FlatMarkupRule(BigDecimal.valueOf(0.01));
+        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+
+        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
+        BigDecimal expected = new BigDecimal("0.01");
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void testPointZeroZeroZeroOnePercent() {
+        ruleUnderTest = new FlatMarkupRule(BigDecimal.valueOf(0.0001));
+        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+
+        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
+        BigDecimal expected = new BigDecimal("0.00");
+        assertThat(actual, is(expected));
+    }
+
 }

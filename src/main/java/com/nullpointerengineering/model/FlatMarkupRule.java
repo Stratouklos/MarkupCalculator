@@ -22,4 +22,5 @@ public class FlatMarkupRule implements Rule {
     public BigDecimal applyTo(Order order) {
         return order.getOrderValue().multiply(markup).setScale(2, RoundingMode.HALF_EVEN);
     }
+
 }

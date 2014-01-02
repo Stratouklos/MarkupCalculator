@@ -27,7 +27,7 @@ public class LineReaderFromFileTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    OrderParser mockParser = Mockito.mock(OrderParser.class);
+    Parser mockParser = Mockito.mock(Parser.class);
 
     @Test
     public void readOneOrder() throws Exception {

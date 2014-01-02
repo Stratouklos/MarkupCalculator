@@ -9,7 +9,7 @@ import java.util.Collection;
  * User: Stratos
  * A parser for orders
  */
-public interface OrderParser extends Parser {
+public interface OrderParser {
 
     public static final String SET_FIELDS_ONCE_ERROR = "Each field of an order can only be set once";
     public static final String INCOMPLETE_DATA_ERROR = "Incomplete data error, please ensure all data have been processed";

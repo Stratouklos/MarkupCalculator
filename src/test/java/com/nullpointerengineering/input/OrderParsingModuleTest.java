@@ -29,7 +29,7 @@ public class OrderParsingModuleTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    OrderParser parser = new ThreeLineOrderParser();
+    ThreeLineOrderParser parser = new ThreeLineOrderParser();
     LineReaderFromFile lineReaderFromFile;
 
     @Test

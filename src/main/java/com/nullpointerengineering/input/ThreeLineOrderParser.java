@@ -10,7 +10,7 @@ import java.util.HashSet;
  * User: Stratos
  * An object to parse strings into Orders it uses internal state heavily and it's NOT thread safe
  */
-public class ThreeLineOrderParser implements OrderParser {
+public class ThreeLineOrderParser implements OrderParser, Parser {
 
     private int workers = -1;
     private String money , type;

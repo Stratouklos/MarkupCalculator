@@ -1,5 +1,7 @@
-package com.nullpointerengineering.input;
+package com.nullpointerengineering.module;
 
+import com.nullpointerengineering.input.LineReaderFromFile;
+import com.nullpointerengineering.input.ThreeLineOrderParser;
 import com.nullpointerengineering.model.Order;
 import org.junit.Rule;
 import org.junit.Test;

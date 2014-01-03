@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 *  Calculates a markup according to the workers involved
  */
 
-public class WorkersMarkupRule implements Rule{
+public class WorkersMarkupRule implements FinancialRule {
 
     private final BigDecimal markup;
 

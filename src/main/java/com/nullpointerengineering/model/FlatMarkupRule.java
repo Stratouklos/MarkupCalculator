@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * User: Stratos
  * Calculates a flat markup
  */
-public class FlatMarkupRule implements Rule {
+public class FlatMarkupRule implements FinancialRule {
 
     private final BigDecimal markup;
 

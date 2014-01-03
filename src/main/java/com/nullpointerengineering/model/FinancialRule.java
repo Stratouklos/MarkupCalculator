@@ -8,7 +8,7 @@ import java.math.RoundingMode;
  * User: Stratos
  * Financial rules that can be applied to an order to generate a price adjustment
  */
-public interface Rule {
+public interface FinancialRule {
 
     public static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     public static final RoundingMode RULE_ROUNDING_MODE = RoundingMode.HALF_EVEN;

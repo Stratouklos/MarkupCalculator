@@ -1,6 +1,8 @@
 package com.nullpointerengineering.model;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -20,6 +22,9 @@ public class FlatMarkupRuleTest {
 
     private FlatMarkupRule ruleUnderTest;
     private Order mockOrder = mock(OrderImpl.class);
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testFivePercent() {
@@ -90,5 +95,12 @@ public class FlatMarkupRuleTest {
         BigDecimal expected = new BigDecimal("0.00");
         assertThat(actual, is(expected));
     }
+
+    @Test
+    public void testNullMarkupThrowsException() {
+        expectedException.expect(NullPointerException.class);
+        ruleUnderTest = new FlatMarkupRule(null);
+    }
+
 
 }

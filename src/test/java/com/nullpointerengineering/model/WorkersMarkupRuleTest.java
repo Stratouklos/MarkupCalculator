@@ -1,6 +1,8 @@
 package com.nullpointerengineering.model;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -19,8 +21,11 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class WorkersMarkupRuleTest {
 
-    private WorkersMarkupRule ruleUnderTest;
+    private FinancialRule ruleUnderTest;
     private Order mockOrder = mock(OrderImpl.class);
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testOneWorker() {
@@ -55,4 +60,9 @@ public class WorkersMarkupRuleTest {
         assertThat(actual, is(expected));
     }
 
+    @Test
+    public void testNullMarkupThrowsException() {
+        expectedException.expect(NullPointerException.class);
+        ruleUnderTest = new WorkersMarkupRule(null);
+    }
 }

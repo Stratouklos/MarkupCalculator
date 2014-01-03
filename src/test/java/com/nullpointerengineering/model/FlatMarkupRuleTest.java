@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class FlatMarkupRuleTest {
 
     private FlatMarkupRule ruleUnderTest;
-    private Order mockOrder = mock(Order.class);
+    private Order mockOrder = mock(OrderImpl.class);
 
     @Test
     public void testFivePercent() {

@@ -1,6 +1,7 @@
 package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.model.Order;
+import com.nullpointerengineering.model.OrderImpl;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,7 +35,7 @@ public class ThreeLineOrderParser implements OrderParser, Parser {
         if ( checkAndReadMoney(dataLine) || checkAndReadWorkers(dataLine) || checkAndReadType(dataLine) ) {
             //Something was successfully read check to see if there is enough data to complete an order
             if (orderIsReady()) {
-                orders.add(Order.newOrder(money, workers, type));
+                orders.add(OrderImpl.newOrder(money, workers, type));
                 resetValues();
             }
         } else {

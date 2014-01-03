@@ -23,7 +23,7 @@ public class OrderTest {
 
     @Test
     public void newOrderTest() {
-        Order order = Order.newOrder("12223.22", 3, "food");
+        Order order = OrderImpl.newOrder("12223.22", 3, "food");
         assertThat(order.getType(), is("food"));
     }
 
@@ -31,40 +31,40 @@ public class OrderTest {
     public void negativeWorkersTest() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("The number of workers cannot be zero or bellow");
-        Order.newOrder("10.00", -1, "food");
+        OrderImpl.newOrder("10.00", -1, "food");
     }
 
     @Test
     public void zeroWorkersTest() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("The number of workers cannot be zero or bellow");
-        Order.newOrder("10.00", 0, "food");
+        OrderImpl.newOrder("10.00", 0, "food");
     }
 
     @Test
     public void nullValue() {
         thrown.expect(NullPointerException.class);
-        Order.newOrder(null, 1, "food");
+        OrderImpl.newOrder(null, 1, "food");
     }
 
     @Test
     public void nullTypeOrder() {
         thrown.expect(NullPointerException.class);
-        Order.newOrder("10.00", 1, null);
+        OrderImpl.newOrder("10.00", 1, null);
     }
 
     @Test
     public void testHashFunction() {
-        Order order1 = Order.newOrder("12223.22", 3, "food");
-        Order order2 = Order.newOrder("12223.22", 3, "food");
+        Order order1 = OrderImpl.newOrder("12223.22", 3, "food");
+        Order order2 = OrderImpl.newOrder("12223.22", 3, "food");
 
         assertEquals(order1.hashCode(), order2.hashCode());
     }
 
     @Test
     public void testEqualsFunction() {
-        Order order1 = Order.newOrder("12223.22", 1, "food");
-        Object order2 = Order.newOrder("12223.22", 1, "food");
+        Order order1 = OrderImpl.newOrder("12223.22", 1, "food");
+        Object order2 = OrderImpl.newOrder("12223.22", 1, "food");
 
         assertEquals(order1, order2);
     }

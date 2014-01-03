@@ -1,6 +1,7 @@
 package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.model.Order;
+import com.nullpointerengineering.model.OrderImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,7 +34,7 @@ public class OrderParserTest {
         orderParserUnderTest.parse("3 people");
         orderParserUnderTest.parse("food");
 
-        Order expectedOrder = Order.newOrder("10.10", 3, "food");
+        Order expectedOrder = OrderImpl.newOrder("10.10", 3, "food");
         Order actualOrder = orderParserUnderTest.getOrders().iterator().next();
 
         assertThat(actualOrder, is(expectedOrder));
@@ -47,7 +48,7 @@ public class OrderParserTest {
         orderParserUnderTest.parse(" ");
         orderParserUnderTest.parse("food");
 
-        Order expectedOrder = Order.newOrder("10.10", 3, "food");
+        Order expectedOrder = OrderImpl.newOrder("10.10", 3, "food");
         Order actualOrder = orderParserUnderTest.getOrders().iterator().next();
 
         assertThat(actualOrder, is(expectedOrder));
@@ -62,7 +63,7 @@ public class OrderParserTest {
         orderParserUnderTest.parse("1 person");
         orderParserUnderTest.parse("drugs");
 
-        Order expectedOrder = Order.newOrder("20.22", 1, "drugs");
+        Order expectedOrder = OrderImpl.newOrder("20.22", 1, "drugs");
         Iterator<Order> orderIterator = orderParserUnderTest.getOrders().iterator();
         orderIterator.next();
         Order actualOrder = orderParserUnderTest.getOrders().iterator().next();

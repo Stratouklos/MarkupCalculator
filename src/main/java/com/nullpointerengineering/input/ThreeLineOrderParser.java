@@ -11,16 +11,20 @@ import java.util.HashSet;
  * User: Stratos
  * An object to parse strings into Orders it uses internal state heavily and it's NOT thread safe
  */
-public class ThreeLineOrderParser implements OrderParser, Parser {
+public class ThreeLineOrderParser implements OrderRepository, Parser {
 
     private int workers = -1;
     private String money , type;
 
+    private Collection<Order> orders = new HashSet<>();
+
+    public static final String SET_FIELDS_ONCE_ERROR = "Each field of an order can only be set once";
+    public static final String INCOMPLETE_DATA_ERROR = "Incomplete data error, please ensure all data have been processed";
+    public static final String ILLEGAL_LINE_FORMAT_ERROR = "Illegal line format";
+
     private static final String MONEY_PATTERN = "\\$\\d+\\.\\d{2}";
     private static final String WORKERS_PATTERN = "\\d+ (people|person)";
     private static final String TYPE_PATTERN = "[a-zA-Z]*";
-
-    Collection<Order> orders = new HashSet<>();
 
     /**
      * Parse a line of data to create orders.

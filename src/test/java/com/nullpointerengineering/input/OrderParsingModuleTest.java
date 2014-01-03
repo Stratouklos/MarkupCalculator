@@ -10,7 +10,7 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-import static com.nullpointerengineering.input.OrderParser.INCOMPLETE_DATA_ERROR;
+import static com.nullpointerengineering.input.ThreeLineOrderParser.INCOMPLETE_DATA_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

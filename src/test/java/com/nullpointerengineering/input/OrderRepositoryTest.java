@@ -10,9 +10,9 @@ import org.junit.runners.JUnit4;
 
 import java.util.Iterator;
 
-import static com.nullpointerengineering.input.OrderParser.INCOMPLETE_DATA_ERROR;
-import static com.nullpointerengineering.input.OrderParser.SET_FIELDS_ONCE_ERROR;
-import static com.nullpointerengineering.input.OrderParser.ILLEGAL_LINE_FORMAT_ERROR;
+import static com.nullpointerengineering.input.ThreeLineOrderParser.INCOMPLETE_DATA_ERROR;
+import static com.nullpointerengineering.input.ThreeLineOrderParser.SET_FIELDS_ONCE_ERROR;
+import static com.nullpointerengineering.input.ThreeLineOrderParser.ILLEGAL_LINE_FORMAT_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
  * User: Stratos
  */
 @RunWith(JUnit4.class)
-public class OrderParserTest {
+public class OrderRepositoryTest {
 
     private ThreeLineOrderParser orderParserUnderTest = new ThreeLineOrderParser();
 

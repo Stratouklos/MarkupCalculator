@@ -23,6 +23,11 @@ public class LaborMarkupRule implements FinancialRule {
     }
 
     @Override
+    public String toString() {
+        return String.format("Labor markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (! (object instanceof LaborMarkupRule)) return false;

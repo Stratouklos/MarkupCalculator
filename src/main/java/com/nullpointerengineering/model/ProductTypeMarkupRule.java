@@ -28,6 +28,12 @@ public class ProductTypeMarkupRule implements FinancialRule {
     }
 
     @Override
+    public String toString() {
+        return String.format("Product type markup rule of %s percent for %s",
+                markup.multiply(ONE_HUNDRED).toPlainString(), productType);
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (! (object instanceof ProductTypeMarkupRule)) return false;

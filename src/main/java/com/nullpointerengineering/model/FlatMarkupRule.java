@@ -21,6 +21,11 @@ public class FlatMarkupRule implements FinancialRule {
     }
 
     @Override
+    public String toString() {
+        return String.format("Flat markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (! (object instanceof FlatMarkupRule)) return false;

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
  * User: Stratos
  */
 @RunWith(JUnit4.class)
-public class OrderRepositoryTest {
+public class OrderParserTest {
 
     private ThreeLineOrderParser orderParserUnderTest = new ThreeLineOrderParser();
 

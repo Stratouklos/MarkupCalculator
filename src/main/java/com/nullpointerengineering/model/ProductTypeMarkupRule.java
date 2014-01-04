@@ -26,4 +26,15 @@ public class ProductTypeMarkupRule implements FinancialRule {
             return BigDecimal.ZERO.setScale(RULE_SCALE);
         }
     }
+
+    //Added for testing purposes
+    public BigDecimal getMarkup() {
+        return markup;
+    }
+
+    //Added for testing purposes
+    public String getProductType() {
+        return productType;
+    }
+
 }

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
  *
  */
 @RunWith(JUnit4.class)
-public class WorkersMarkupRuleTest {
+public class LaborMarkupRuleTest {
 
     private FinancialRule ruleUnderTest;
     private Order mockOrder = mock(OrderImpl.class);
@@ -29,7 +29,7 @@ public class WorkersMarkupRuleTest {
 
     @Test
     public void testOneWorker() {
-        ruleUnderTest = new WorkersMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
         when(mockOrder.getWorkers()).thenReturn(1);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 
@@ -40,7 +40,7 @@ public class WorkersMarkupRuleTest {
 
     @Test
     public void testTwoWorkers() {
-        ruleUnderTest = new WorkersMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
         when(mockOrder.getWorkers()).thenReturn(2);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 
@@ -51,7 +51,7 @@ public class WorkersMarkupRuleTest {
 
     @Test
     public void testZeroWorkers() {
-        ruleUnderTest = new WorkersMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
         when(mockOrder.getWorkers()).thenReturn(0);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 
@@ -63,6 +63,6 @@ public class WorkersMarkupRuleTest {
     @Test
     public void testNullMarkupThrowsException() {
         expectedException.expect(NullPointerException.class);
-        ruleUnderTest = new WorkersMarkupRule(null);
+        ruleUnderTest = new LaborMarkupRule(null);
     }
 }

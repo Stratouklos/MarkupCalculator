@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 *  Calculates a markup according to the workers involved
  */
 
-public class WorkersMarkupRule implements FinancialRule {
+public class LaborMarkupRule implements FinancialRule {
 
     private final BigDecimal markup;
 
-    public WorkersMarkupRule(BigDecimal markupPercentagePerWorker) {
+    public LaborMarkupRule(BigDecimal markupPercentagePerWorker) {
         this.markup = markupPercentagePerWorker.divide(ONE_HUNDRED);
     }
 
@@ -21,4 +21,10 @@ public class WorkersMarkupRule implements FinancialRule {
         BigDecimal totalMarkup  = markup.multiply(BigDecimal.valueOf(order.getWorkers()));
         return order.getOrderValue().multiply(totalMarkup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
     }
+
+    //Added for testing purposes
+    public BigDecimal getMarkup() {
+        return markup;
+    }
+
 }

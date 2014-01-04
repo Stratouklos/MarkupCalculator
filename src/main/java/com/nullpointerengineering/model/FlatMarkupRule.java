@@ -20,4 +20,20 @@ public class FlatMarkupRule implements FinancialRule {
         return order.getOrderValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (! (object instanceof FlatMarkupRule)) return false;
+        FlatMarkupRule that = (FlatMarkupRule) object;
+
+        return this.markup.equals(that.markup);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 403;
+        hash = hash * 45 + markup.hashCode();
+        return hash;
+    }
+
 }

@@ -64,9 +64,10 @@ public class OrderTest {
     @Test
     public void testEqualsFunction() {
         Order order1 = OrderImpl.newOrder("12223.22", 1, "food");
-        Object order2 = OrderImpl.newOrder("12223.22", 1, "food");
+        Order order2 = OrderImpl.newOrder("12223.22", 1, "food");
 
         assertEquals(order1, order2);
+        assertEquals(order2, order1);
     }
 
 }

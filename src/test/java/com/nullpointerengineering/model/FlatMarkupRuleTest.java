@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -103,6 +104,23 @@ public class FlatMarkupRuleTest {
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
         BigDecimal expected = new BigDecimal("0.00");
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void testHashCode() {
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(5));
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(5));
+
+        assertEquals(rule1.hashCode(), rule2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(5));
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(5));
+
+        assertEquals(rule1, rule2);
+        assertEquals(rule2, rule1);
     }
 
     @Test

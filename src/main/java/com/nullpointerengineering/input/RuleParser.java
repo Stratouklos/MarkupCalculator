@@ -3,8 +3,8 @@ package com.nullpointerengineering.input;
 import com.nullpointerengineering.model.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +15,7 @@ public class RuleParser implements RuleRepository, Parser {
 
     public static final String BADLY_FORMATTED_RULE = "Illegal rule format";
 
-    private final Collection<FinancialRule> rules = new ArrayList<>();
+    private final Collection<FinancialRule> rules = new HashSet<>();
     private final FinancialRuleFactory ruleFactory;
 
     public RuleParser(FinancialRuleFactory financialRuleFactory) {
@@ -36,7 +36,6 @@ public class RuleParser implements RuleRepository, Parser {
         String subtype = firstPart.substring(0, lastUnderscore);
         subtype = subtype.replace('_', ' ').toLowerCase();
         BigDecimal value = new BigDecimal(line.split("=")[1]);
-
 
         rules.add(ruleFactory.buildRule(type, subtype, value ));
     }

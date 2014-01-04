@@ -27,4 +27,22 @@ public class ProductTypeMarkupRule implements FinancialRule {
         }
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (! (object instanceof ProductTypeMarkupRule)) return false;
+        ProductTypeMarkupRule that = (ProductTypeMarkupRule) object;
+
+        return this.markup.equals(that.markup) &&
+                this.productType.equals(that.productType);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 903;
+        hash = hash * 11 + markup.hashCode();
+        hash = hash * 11 + productType.hashCode();
+        return hash;
+    }
+
 }

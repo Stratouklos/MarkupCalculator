@@ -1,6 +1,7 @@
 package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.model.FinancialRuleFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static com.nullpointerengineering.input.RuleParser.BADLY_FORMATTED_RULE;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -31,6 +33,13 @@ public class RuleParserTest {
     public void setup() {
         mockFactory = mock(FinancialRuleFactory.class);
         parserUnderTest = new RuleParser(mockFactory);
+    }
+
+    @Test
+    public void testGetRules() {
+        parserUnderTest.parse("flat_markup=5");
+
+        Assert.assertThat(parserUnderTest.getRules().size(), is(1));
     }
 
     @Test

@@ -20,15 +20,16 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ProductTypeMarkupRuleTest {
 
-    private FinancialRule ruleUnderTest;
-    private Order mockOrder = mock(OrderImpl.class);
+    FinancialRuleFactory ruleFactory = new FinancialRuleFactory();
+    FinancialRule ruleUnderTest;
+    Order mockOrder = mock(OrderImpl.class);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testMarkupForDrugs() {
-        ruleUnderTest = new ProductTypeMarkupRule(BigDecimal.valueOf(5), "drugs");
+        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", BigDecimal.valueOf(5));
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("drugs");
 
@@ -39,7 +40,8 @@ public class ProductTypeMarkupRuleTest {
 
     @Test
     public void testMarkupForElectronics() {
-        ruleUnderTest = new ProductTypeMarkupRule(BigDecimal.valueOf(5), "electronics");
+        ruleUnderTest = ruleFactory.buildRule("markup", "electronics", BigDecimal.valueOf(5));
+
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
@@ -50,7 +52,8 @@ public class ProductTypeMarkupRuleTest {
 
     @Test
     public void testMarkupIsNotAppliedForOtherType() {
-        ruleUnderTest = new ProductTypeMarkupRule(BigDecimal.valueOf(5), "drugs");
+        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", BigDecimal.valueOf(5));
+
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("pets");
 

@@ -22,9 +22,4 @@ public class LaborMarkupRule implements FinancialRule {
         return order.getOrderValue().multiply(totalMarkup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
     }
 
-    //Added for testing purposes
-    public BigDecimal getMarkup() {
-        return markup;
-    }
-
 }

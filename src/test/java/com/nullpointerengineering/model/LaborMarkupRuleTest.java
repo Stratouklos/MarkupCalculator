@@ -21,15 +21,17 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class LaborMarkupRuleTest {
 
-    private FinancialRule ruleUnderTest;
-    private Order mockOrder = mock(OrderImpl.class);
+    FinancialRuleFactory ruleFactory = new FinancialRuleFactory();
+    FinancialRule ruleUnderTest;
+    Order mockOrder = mock(OrderImpl.class);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testOneWorker() {
-        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
+
         when(mockOrder.getWorkers()).thenReturn(1);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 
@@ -40,7 +42,8 @@ public class LaborMarkupRuleTest {
 
     @Test
     public void testTwoWorkers() {
-        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
+
         when(mockOrder.getWorkers()).thenReturn(2);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 
@@ -51,7 +54,8 @@ public class LaborMarkupRuleTest {
 
     @Test
     public void testZeroWorkers() {
-        ruleUnderTest = new LaborMarkupRule(BigDecimal.valueOf(2));
+        ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
+
         when(mockOrder.getWorkers()).thenReturn(0);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
 

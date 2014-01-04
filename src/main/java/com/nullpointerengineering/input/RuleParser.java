@@ -1,9 +1,6 @@
 package com.nullpointerengineering.input;
 
-import com.nullpointerengineering.model.FinancialRule;
-import com.nullpointerengineering.model.FlatMarkupRule;
-import com.nullpointerengineering.model.LaborMarkupRule;
-import com.nullpointerengineering.model.ProductTypeMarkupRule;
+import com.nullpointerengineering.model.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,11 +13,14 @@ import java.util.Collection;
  */
 public class RuleParser implements RuleRepository, Parser {
 
-    public static final String NON_MARKUP_RULES_NOT_SUPPORTED = "Non markup rules are not supported... yet";
-    public static final String TOO_MANY_WORDS_AS_TYPE_DESCRIPTIONS = "Cannot use more than one word to describe types";
     public static final String BADLY_FORMATTED_RULE = "Illegal rule format";
 
-    private Collection<FinancialRule> rules = new ArrayList<>();
+    private final Collection<FinancialRule> rules = new ArrayList<>();
+    private final FinancialRuleFactory ruleFactory;
+
+    public RuleParser(FinancialRuleFactory financialRuleFactory) {
+        this.ruleFactory = financialRuleFactory;
+    }
 
     /**
      * Consume a line of text and generate a new rule for each line successfully parsed
@@ -30,17 +30,15 @@ public class RuleParser implements RuleRepository, Parser {
     public void parse(String line) {
         checkInputFormat(line);
 
-        String type = checkAndGetType(line.split("=")[0]);
+        String firstPart = line.split("=")[0];
+        int lastUnderscore = firstPart.lastIndexOf('_');
+        String type = firstPart.substring(lastUnderscore + 1);
+        String subtype = firstPart.substring(0, lastUnderscore);
+        subtype = subtype.replace('_', ' ').toLowerCase();
         BigDecimal value = new BigDecimal(line.split("=")[1]);
 
-        if (type.equalsIgnoreCase("flat"))
-            rules.add(new FlatMarkupRule(value));
-        else if (type.equalsIgnoreCase("labor"))
-            rules.add(new LaborMarkupRule(value));
-        else if (type.contains("_"))
-            throw new IllegalArgumentException(TOO_MANY_WORDS_AS_TYPE_DESCRIPTIONS);
-        else
-            rules.add(new ProductTypeMarkupRule(value, type.toLowerCase()));
+
+        rules.add(ruleFactory.buildRule(type, subtype, value ));
     }
 
     /**
@@ -56,15 +54,6 @@ public class RuleParser implements RuleRepository, Parser {
         if (!dataLine.matches("[[a-zA-Z]+_[a-zA-Z]+]+_[a-zA-Z]*=\\d+\\.?\\d*$")) {
             throw new IllegalArgumentException(BADLY_FORMATTED_RULE + ": " + dataLine);
         }
-    }
-
-    private String checkAndGetType(String ruleName) {
-        int lastUnderscore = ruleName.lastIndexOf('_');
-
-        if (!ruleName.substring(lastUnderscore + 1).equalsIgnoreCase("markup"))
-            throw new IllegalArgumentException(NON_MARKUP_RULES_NOT_SUPPORTED);
-
-        return ruleName.substring(0,lastUnderscore);
     }
 
 }

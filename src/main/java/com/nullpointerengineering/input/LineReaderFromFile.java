@@ -18,7 +18,7 @@ public class LineReaderFromFile {
         this.fileName = fileName;
     }
 
-    public void readIntoParser(Parser parser) throws IOException {
+    public void read(Parser parser) throws IOException {
         String line;
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName))) {
             while ((line = fileReader.readLine()) != null) {

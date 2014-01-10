@@ -32,7 +32,7 @@ public class LineReaderFromFileTest {
     @Test
     public void readOneOrder() throws Exception {
         LineReaderFromFile lineReader = new LineReaderFromFile(ONE_ORDER);
-        lineReader.readIntoParser(mockParser);
+        lineReader.read(mockParser);
         verify(mockParser, ONCE).parse("$1299.99");
         verify(mockParser, ONCE).parse("3 people");
         verify(mockParser, ONCE).parse("food");
@@ -42,7 +42,7 @@ public class LineReaderFromFileTest {
     public void fileNotFoundTest() throws Exception {
         LineReaderFromFile dataReaderUnderTest = new LineReaderFromFile("unknownFile");
         expectedException.expect(FileNotFoundException.class);
-        dataReaderUnderTest.readIntoParser(mockParser);
+        dataReaderUnderTest.read(mockParser);
     }
 
 }

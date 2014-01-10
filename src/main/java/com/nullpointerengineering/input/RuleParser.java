@@ -1,25 +1,25 @@
 package com.nullpointerengineering.input;
 
+import com.nullpointerengineering.data.RuleRepository;
 import com.nullpointerengineering.model.*;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
  * Reads the markup rules line by line
  */
-public class RuleParser implements RuleRepository, Parser {
+public class RuleParser implements Parser {
 
     public static final String BADLY_FORMATTED_RULE = "Illegal rule format";
 
-    private final Collection<FinancialRule> rules = new HashSet<>();
+    private final RuleRepository ruleRepository;
     private final FinancialRuleFactory ruleFactory;
 
-    public RuleParser(FinancialRuleFactory financialRuleFactory) {
+    public RuleParser(FinancialRuleFactory financialRuleFactory, RuleRepository ruleRepository) {
         this.ruleFactory = financialRuleFactory;
+        this.ruleRepository = ruleRepository;
     }
 
     /**
@@ -37,16 +37,7 @@ public class RuleParser implements RuleRepository, Parser {
         subtype = subtype.replace('_', ' ').toLowerCase();
         BigDecimal value = new BigDecimal(line.split("=")[1]);
 
-        rules.add(ruleFactory.buildRule(type, subtype, value ));
-    }
-
-    /**
-     * Get a Collection of the rules parsed.
-     * @return Collection of {@link FinancialRule}
-     */
-    @Override
-    public Collection<FinancialRule> getRules() {
-        return rules;
+        ruleRepository.addRule(ruleFactory.buildRule(type, subtype, value));
     }
 
     private void checkInputFormat(String dataLine) {

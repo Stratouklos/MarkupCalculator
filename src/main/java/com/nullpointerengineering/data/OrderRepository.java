@@ -1,4 +1,4 @@
-package com.nullpointerengineering.input;
+package com.nullpointerengineering.data;
 
 import com.nullpointerengineering.model.Order;
 

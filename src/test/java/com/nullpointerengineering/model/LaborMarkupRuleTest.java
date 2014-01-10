@@ -67,16 +67,16 @@ public class LaborMarkupRuleTest {
 
     @Test
     public void testHashCode() {
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.ZERO);
 
         assertEquals(rule1.hashCode(), rule2.hashCode());
     }
 
     @Test
     public void testEquals() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.ZERO);
 
         assertEquals(rule1, rule2);
         assertEquals(rule2, rule1);

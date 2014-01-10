@@ -27,18 +27,12 @@ public class FlatMarkupRule implements FinancialRule {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (! (object instanceof FlatMarkupRule)) return false;
-        FlatMarkupRule that = (FlatMarkupRule) object;
-
-        return this.markup.equals(that.markup);
+        return object instanceof FlatMarkupRule;
     }
 
     @Override
     public int hashCode() {
-        int hash = 403;
-        hash = hash * 45 + markup.hashCode();
-        return hash;
+        return getClass().hashCode();
     }
 
 }

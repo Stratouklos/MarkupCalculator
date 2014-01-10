@@ -29,18 +29,12 @@ public class LaborMarkupRule implements FinancialRule {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (! (object instanceof LaborMarkupRule)) return false;
-        LaborMarkupRule that = (LaborMarkupRule) object;
-
-        return this.markup.equals(that.markup);
+        return  (object instanceof LaborMarkupRule);
     }
 
     @Override
     public int hashCode() {
-        int hash = 603;
-        hash = hash * 76 + markup.hashCode();
-        return hash;
+        return getClass().hashCode();
     }
 
 }

@@ -8,6 +8,8 @@ import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
@@ -30,30 +32,30 @@ public class ProductTypeMarkupRuleTest {
 
     @Test
     public void testMarkupForDrugs() {
-        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", BigDecimal.valueOf(5));
+        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("drugs");
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("5.00");
+        BigDecimal expected = new BigDecimal("1.00");
         assertThat(actual, is(expected));
     }
 
     @Test
     public void testMarkupForElectronics() {
-        ruleUnderTest = ruleFactory.buildRule("markup", "electronics", BigDecimal.valueOf(5));
+        ruleUnderTest = ruleFactory.buildRule("markup", "electronics", ONE);
 
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("5.00");
+        BigDecimal expected = new BigDecimal("1.00");
         assertThat(actual, is(expected));
     }
 
     @Test
     public void testMarkupIsNotAppliedForOtherType() {
-        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", BigDecimal.valueOf(5));
+        ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
 
         when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("pets");
@@ -64,27 +66,43 @@ public class ProductTypeMarkupRuleTest {
     }
 
     @Test
-    public void testEquals() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", BigDecimal.ZERO);
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", BigDecimal.ONE);
+    public void testTypeOf() {
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", ZERO);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", ONE);
 
         assertTrue(rule1.isTypeOf(rule2));
-        assertTrue(rule2.isTypeOf(rule1));    }
+        assertTrue(rule2.isTypeOf(rule1));    
+    }
 
     @Test
     public void testNotEquals() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", BigDecimal.ZERO);
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "drugs", BigDecimal.ONE);
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", ZERO);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "drugs", ONE);
 
         assertNotEquals(rule1, rule2);
         assertNotEquals(rule2, rule1);
     }
 
+    @Test
+    public void testHashCode() {
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", ONE);
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", ONE);
 
+        assertEquals(rule1.hashCode(), rule2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", ONE);
+
+        assertEquals(rule1, rule2);
+        assertEquals(rule2, rule1);
+    }
     @Test
     public void testNullTypeThrowsException() {
         expectedException.expect(NullPointerException.class);
-        ruleUnderTest = new ProductTypeMarkupRule(BigDecimal.valueOf(5), null);
+        ruleUnderTest = new ProductTypeMarkupRule(ONE, null);
     }
 
     @Test
@@ -96,7 +114,7 @@ public class ProductTypeMarkupRuleTest {
     @Test
     public void testEmptyTypeThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
-        ruleUnderTest = new ProductTypeMarkupRule(BigDecimal.valueOf(5), "  ");
+        ruleUnderTest = new ProductTypeMarkupRule(ONE, "  ");
     }
 
 }

@@ -9,6 +9,7 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -78,6 +79,23 @@ public class LaborMarkupRuleTest {
     public void testNullMarkupThrowsException() {
         expectedException.expect(NullPointerException.class);
         ruleUnderTest = new LaborMarkupRule(null);
+    }
+
+    @Test
+    public void testHashCode() {
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+
+        assertEquals(rule1.hashCode(), rule2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(5));
+
+        assertEquals(rule1, rule2);
+        assertEquals(rule2, rule1);
     }
 
 }

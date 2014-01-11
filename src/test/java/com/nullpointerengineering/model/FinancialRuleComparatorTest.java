@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import static java.math.BigDecimal.ONE;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -33,12 +35,6 @@ public class FinancialRuleComparatorTest {
     }
 
     @Test
-    public void testSameRules() {
-        comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(flatRule, flatRule) == 1);
-    }
-
-    @Test
     public void testTwoRules() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class).then(LaborMarkupRule.class);
         assertTrue(comparatorUnderTest.compare(typeRule, laborRule) < 0);
@@ -47,6 +43,14 @@ public class FinancialRuleComparatorTest {
     @Test
     public void testLowPriorityRules() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(typeRule, typeRule) == 1);
+        assertTrue(comparatorUnderTest.compare(typeRule, laborRule) == 1);
     }
+
+    @Test
+    public void testTheSameRule() {
+        comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
+        assertThat(comparatorUnderTest.compare(typeRule, typeRule), is(0));
+    }
+
+
 }

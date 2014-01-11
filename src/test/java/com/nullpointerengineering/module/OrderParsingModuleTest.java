@@ -37,7 +37,7 @@ public class OrderParsingModuleTest {
     @Test
     public void readOneOrder() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
-        lineReaderFromFile.readIntoParser(parser);
+        lineReaderFromFile.read(parser);
         Collection<? super Order> orders = parser.getOrders();
         assertThat(orders.size(), is(1));
     }
@@ -45,7 +45,7 @@ public class OrderParsingModuleTest {
     @Test
     public void readTwoOrders() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(TWO_ORDERS);
-        lineReaderFromFile.readIntoParser(parser);
+        lineReaderFromFile.read(parser);
         Collection<? super Order> orders = parser.getOrders();
         assertThat(orders.size(), is(2));
     }
@@ -53,7 +53,7 @@ public class OrderParsingModuleTest {
     @Test
     public void readValueCorrectly() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
-        lineReaderFromFile.readIntoParser(parser);
+        lineReaderFromFile.read(parser);
         Order readOrder = parser.getOrders().iterator().next();
         BigDecimal expectedValue = new BigDecimal("1299.99");
         assertThat(readOrder.getOrderValue(), is(expectedValue));
@@ -62,7 +62,7 @@ public class OrderParsingModuleTest {
     @Test
     public void readFromIncompleteData() throws Exception {
         lineReaderFromFile = new LineReaderFromFile(INCOMPLETE_ORDER);
-        lineReaderFromFile.readIntoParser(parser);
+        lineReaderFromFile.read(parser);
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(INCOMPLETE_DATA_ERROR);
         parser.getOrders();

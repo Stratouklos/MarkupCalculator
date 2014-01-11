@@ -23,18 +23,13 @@ public class LaborMarkupRule implements FinancialRule {
     }
 
     @Override
+    public boolean isTypeOf(FinancialRule rule) {
+        return  (rule instanceof LaborMarkupRule);
+    }
+
+    @Override
     public String toString() {
         return String.format("Labor markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return  (object instanceof LaborMarkupRule);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 
 }

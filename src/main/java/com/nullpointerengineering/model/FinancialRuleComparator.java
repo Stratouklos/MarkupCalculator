@@ -29,6 +29,7 @@ public class FinancialRuleComparator implements Comparator<FinancialRule> {
 
     @Override
     public int compare(FinancialRule rule1, FinancialRule rule2) {
+        if (rule1.equals(rule2)) return 1;
         int priority1 = (rulePriorityMap.containsKey(rule1.getClass())) ?
                 rulePriorityMap.get(rule1.getClass()) : rulePriorityMap.size();
         int priority2 = (rulePriorityMap.containsKey(rule2.getClass())) ?

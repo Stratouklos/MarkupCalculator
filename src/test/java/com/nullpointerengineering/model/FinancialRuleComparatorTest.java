@@ -33,9 +33,9 @@ public class FinancialRuleComparatorTest {
     }
 
     @Test
-    public void testEqualRules() {
+    public void testSameRules() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(flatRule, flatRule) == 0);
+        assertTrue(comparatorUnderTest.compare(flatRule, flatRule) == 1);
     }
 
     @Test
@@ -47,6 +47,6 @@ public class FinancialRuleComparatorTest {
     @Test
     public void testLowPriorityRules() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(typeRule, typeRule) == 0);
+        assertTrue(comparatorUnderTest.compare(typeRule, typeRule) == 1);
     }
 }

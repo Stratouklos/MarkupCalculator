@@ -9,8 +9,8 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,20 +66,12 @@ public class LaborMarkupRuleTest {
     }
 
     @Test
-    public void testHashCode() {
+    public void testTypeOf() {
         FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.ONE);
         FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.ZERO);
 
-        assertEquals(rule1.hashCode(), rule2.hashCode());
-    }
-
-    @Test
-    public void testEquals() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", BigDecimal.ONE);
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", BigDecimal.ZERO);
-
-        assertEquals(rule1, rule2);
-        assertEquals(rule2, rule1);
+        assertTrue(rule1.isTypeOf(rule2));
+        assertTrue(rule2.isTypeOf(rule1));
     }
 
     @Test

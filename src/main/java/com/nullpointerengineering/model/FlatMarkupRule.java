@@ -21,18 +21,13 @@ public class FlatMarkupRule implements FinancialRule {
     }
 
     @Override
+    public boolean isTypeOf(FinancialRule rule) {
+        return rule instanceof FlatMarkupRule;
+    }
+
+    @Override
     public String toString() {
         return String.format("Flat markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return object instanceof FlatMarkupRule;
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 
 }

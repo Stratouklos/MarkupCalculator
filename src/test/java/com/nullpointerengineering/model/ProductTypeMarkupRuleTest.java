@@ -9,9 +9,8 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -65,21 +64,12 @@ public class ProductTypeMarkupRuleTest {
     }
 
     @Test
-    public void testHashCode() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", BigDecimal.ZERO);
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", BigDecimal.ONE);
-
-        assertEquals(rule1.hashCode(), rule2.hashCode());
-    }
-
-    @Test
     public void testEquals() {
         FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", BigDecimal.ZERO);
         FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", BigDecimal.ONE);
 
-        assertEquals(rule1, rule2);
-        assertEquals(rule2, rule1);
-    }
+        assertTrue(rule1.isTypeOf(rule2));
+        assertTrue(rule2.isTypeOf(rule1));    }
 
     @Test
     public void testNotEquals() {

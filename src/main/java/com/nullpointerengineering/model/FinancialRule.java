@@ -22,4 +22,11 @@ public interface FinancialRule {
      */
     BigDecimal applyTo(Order order);
 
+    /**
+     * Checks two rules' type and subtype.
+     * @param rule Rule to be compared to this
+     * @return  True if they belong to the same type and subtype false otherwise.
+     */
+    boolean isTypeOf(FinancialRule rule);
+
 }

@@ -28,25 +28,18 @@ public class ProductTypeMarkupRule implements FinancialRule {
     }
 
     @Override
-    public String toString() {
-        return String.format("Product type markup rule of %s percent for %s",
-                markup.multiply(ONE_HUNDRED).toPlainString(), productType);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (! (object instanceof ProductTypeMarkupRule)) return false;
-        ProductTypeMarkupRule that = (ProductTypeMarkupRule) object;
+    public boolean isTypeOf(FinancialRule rule) {
+        if (this == rule) return true;
+        if (! (rule instanceof ProductTypeMarkupRule)) return false;
+        ProductTypeMarkupRule that = (ProductTypeMarkupRule) rule;
 
         return this.productType.equals(that.productType);
     }
 
     @Override
-    public int hashCode() {
-        int hash = 903;
-        hash = hash * 11 + productType.hashCode();
-        return hash;
+    public String toString() {
+        return String.format("Product type markup rule of %s percent for %s",
+                markup.multiply(ONE_HUNDRED).toPlainString(), productType);
     }
 
 }

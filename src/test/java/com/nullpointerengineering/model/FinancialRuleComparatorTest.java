@@ -25,19 +25,19 @@ public class FinancialRuleComparatorTest {
     @Test
     public void testSingleRule() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(flatRule, laborRule) > 0);
+        assertTrue(comparatorUnderTest.compare(flatRule, laborRule) < 0);
     }
 
     @Test
     public void testSingleRuleReverse() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(laborRule, flatRule) < 0);
+        assertTrue(comparatorUnderTest.compare(laborRule, flatRule) > 0);
     }
 
     @Test
     public void testTwoRules() {
         comparatorUnderTest = FinancialRuleComparator.first(FlatMarkupRule.class).then(LaborMarkupRule.class);
-        assertTrue(comparatorUnderTest.compare(typeRule, laborRule) < 0);
+        assertTrue(comparatorUnderTest.compare(typeRule, laborRule) > 0);
     }
 
     @Test

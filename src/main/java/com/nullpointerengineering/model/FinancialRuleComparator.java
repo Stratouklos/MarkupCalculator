@@ -35,7 +35,7 @@ public class FinancialRuleComparator implements Comparator<FinancialRule> {
         int priority2 = (rulePriorityMap.containsKey(rule2.getClass())) ?
                 rulePriorityMap.get(rule2.getClass()) : rulePriorityMap.size();
         return  (priority1 == priority2) ?
-                1 : priority1 -priority2;
+                1 : priority1 - priority2;
     }
 
 }

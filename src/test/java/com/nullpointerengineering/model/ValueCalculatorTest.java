@@ -7,6 +7,10 @@ import org.junit.runners.JUnit4;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.valueOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -17,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class ValueCalculatorTest {
 
     ValueCalculator calculatorUnderTest;
-    Collection<FinancialRule> mockRules;
+    Collection<FinancialRule> mockRules = new LinkedList<>();
 
     Order mockOrder = mock(Order.class);
 
@@ -54,6 +58,26 @@ public class ValueCalculatorTest {
         calculatorUnderTest.calculateTotalValue(mockOrder);
 
         verifyMockRules(mockRules);
+    }
+
+    @Test
+    public void testCalculateMethod() {
+        calculatorUnderTest = new ValueCalculator(mockRules);
+
+        when(mockOrder.getTotalValue()).thenReturn(ONE);
+        String actual = calculatorUnderTest.calculateTotalValue(mockOrder);
+
+        assertThat(actual, is("$1.00"));
+    }
+
+    @Test
+    public void testCalculateMethodWithNegativeResult() {
+        calculatorUnderTest = new ValueCalculator(mockRules);
+
+        when(mockOrder.getTotalValue()).thenReturn(valueOf(-1));
+        String actual = calculatorUnderTest.calculateTotalValue(mockOrder);
+
+        assertThat(actual, is("$(1.00)"));
     }
 
 }

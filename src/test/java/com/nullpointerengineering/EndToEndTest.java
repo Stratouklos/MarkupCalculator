@@ -9,7 +9,6 @@ import com.nullpointerengineering.model.*;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -44,9 +43,7 @@ public class EndToEndTest {
 
         ValueCalculator calculator = new ValueCalculator(rules);
 
-        BigDecimal totalValue = calculator.calculateTotalValue(order);
-
-        assertThat(totalValue, is(BigDecimal.valueOf(1591.58)));
+        assertThat(calculator.calculateTotalValue(order), is("$1591.58"));
     }
 
     @Test
@@ -64,9 +61,9 @@ public class EndToEndTest {
 
         Iterator<Order> orders = orderParser.getOrders().iterator();
 
-        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(1591.58)));
-        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(6199.81)));
-        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(13707.63)));
+        assertThat(calculator.calculateTotalValue(orders.next()), is("$1591.58"));
+        assertThat(calculator.calculateTotalValue(orders.next()), is("$6199.81"));
+        assertThat(calculator.calculateTotalValue(orders.next()), is("$13707.63"));
     }
 
 }

@@ -1,6 +1,5 @@
 package com.nullpointerengineering.model;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -16,11 +15,11 @@ public class ValueCalculator {
         this.rules = rules;
     }
 
-    public BigDecimal calculateTotalValue(Order order) {
+    public String calculateTotalValue(Order order) {
         for (FinancialRule rule : rules) {
             rule.applyTo(order);
         }
-        return order.getTotalValue();
+        return String.format("$%(.2f", order.getTotalValue());
     }
 
 }

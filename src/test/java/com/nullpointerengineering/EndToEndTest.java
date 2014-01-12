@@ -6,7 +6,6 @@ import com.nullpointerengineering.input.LineReaderFromFile;
 import com.nullpointerengineering.input.RuleParser;
 import com.nullpointerengineering.input.ThreeLineOrderParser;
 import com.nullpointerengineering.model.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -23,8 +21,8 @@ import static org.junit.Assert.assertThat;
  * Test the main workflow.
  */
 public class EndToEndTest {
+
     @Test
-    @Ignore
     public void singleOrder() throws IOException {
         LineReaderFromFile orderReader = new LineReaderFromFile("C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order");
         ThreeLineOrderParser orderParser = new ThreeLineOrderParser();

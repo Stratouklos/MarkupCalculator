@@ -14,13 +14,10 @@ public interface FinancialRule {
     public static final RoundingMode RULE_ROUNDING_MODE = RoundingMode.HALF_EVEN;
     public static final int RULE_SCALE = 2;
     /**
-     * Applies a financial rule to an order these may return positive or negative values based on the characteristics
-     * of each order
-     * @param order The order to apply the rule to (will return {@code BigDecimal.ZERO} if the rule does not apply
-     * @return BigDecimal scaled to two decimal points may be positive or negative and it is the change in price that
-     * should be applied to the order's value.
+     * Applies a financial rule to an order.
+     * @param order The order to apply the rule to will do nothing if the rule does not apply.
      */
-    BigDecimal applyTo(Order order);
+    void applyTo(Order order);
 
     /**
      * Checks two rules' type and subtype.

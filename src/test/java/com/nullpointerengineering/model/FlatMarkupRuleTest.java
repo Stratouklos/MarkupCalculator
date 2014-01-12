@@ -9,11 +9,11 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
-import static org.hamcrest.CoreMatchers.is;
+import static java.math.BigDecimal.valueOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,9 +36,8 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("5.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+        verify(mockOrder).addToBaseValue(valueOf(5).setScale(2));
     }
 
     @Test
@@ -47,9 +46,9 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("0.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToBaseValue(valueOf(0).setScale(2));
     }
 
     @Test
@@ -58,9 +57,8 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("-10.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+        verify(mockOrder).addToBaseValue(valueOf(-10).setScale(2));
     }
 
     @Test
@@ -69,9 +67,9 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("110.01");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToBaseValue(valueOf(110.01));
     }
 
     @Test
@@ -80,9 +78,9 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("3000.30");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToBaseValue(valueOf(3000.30).setScale(2));
     }
 
     @Test
@@ -91,9 +89,9 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("0.01");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToBaseValue(valueOf(0.01).setScale(2));
     }
 
     @Test
@@ -102,9 +100,9 @@ public class FlatMarkupRuleTest {
 
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("0.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToBaseValue(ZERO.setScale(2));
     }
 
     @Test

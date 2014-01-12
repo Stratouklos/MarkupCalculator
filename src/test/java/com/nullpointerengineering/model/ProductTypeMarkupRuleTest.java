@@ -5,16 +5,16 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Matchers;
 
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
-import static org.hamcrest.CoreMatchers.is;
+import static java.math.BigDecimal.valueOf;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,9 +36,9 @@ public class ProductTypeMarkupRuleTest {
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("drugs");
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("1.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
     }
 
     @Test
@@ -48,9 +48,9 @@ public class ProductTypeMarkupRuleTest {
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("1.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
     }
 
     @Test
@@ -60,9 +60,9 @@ public class ProductTypeMarkupRuleTest {
         when(mockOrder.getTotalValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("pets");
 
-        BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
-        BigDecimal expected = new BigDecimal("0.00");
-        assertThat(actual, is(expected));
+        ruleUnderTest.applyTo(mockOrder);
+
+        verify(mockOrder, never()).addToTotalValue(Matchers.any(BigDecimal.class));
     }
 
     @Test

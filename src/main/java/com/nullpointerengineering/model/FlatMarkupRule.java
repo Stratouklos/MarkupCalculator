@@ -16,8 +16,9 @@ public class FlatMarkupRule implements FinancialRule {
     }
 
     @Override
-    public BigDecimal applyTo(Order order) {
-        return order.getBaseValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
+    public void applyTo(Order order) {
+        BigDecimal baseValueAdjustment = order.getBaseValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
+        order.addToBaseValue(baseValueAdjustment);
     }
 
     @Override

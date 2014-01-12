@@ -3,16 +3,11 @@ package com.nullpointerengineering.model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Matchers;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,48 +17,43 @@ import static org.mockito.Mockito.when;
 public class ValueCalculatorTest {
 
     ValueCalculator calculatorUnderTest;
+    Collection<FinancialRule> mockRules;
+
     Order mockOrder = mock(Order.class);
 
-    private Collection<FinancialRule> getMockRules(int numberOfRules, BigDecimal values) {
+    private Collection<FinancialRule> getMockRules(int numberOfRules) {
         Collection<FinancialRule> mockRules = new LinkedList<>();
         for (int i = 0; i < numberOfRules; i++) {
             FinancialRule mockRule = mock(FinancialRule.class);
-            when(mockRule.applyTo(Matchers.<Order>any())).thenReturn(values);
             mockRules.add(mockRule);
         }
         return mockRules;
     }
 
+    private void verifyMockRules(Collection<FinancialRule> mocks) {
+        for (FinancialRule mock : mocks) {
+            verify(mock, times(1)).applyTo(mockOrder);
+        }
+    }
+
     @Test
     public void testSingleRule() {
-        calculatorUnderTest = new ValueCalculator(getMockRules(1, BigDecimal.valueOf(10.10)));
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100));
+        mockRules = getMockRules(1);
+        calculatorUnderTest = new ValueCalculator(mockRules);
 
-        assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(110.10)));
+        calculatorUnderTest.calculateTotalValue(mockOrder);
+
+        verifyMockRules(mockRules);
     }
 
     @Test
     public void testTenRules() {
-        calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(5)));
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
+        mockRules = getMockRules(10);
+        calculatorUnderTest = new ValueCalculator(mockRules);
 
-        assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(150.0)));
-    }
+        calculatorUnderTest.calculateTotalValue(mockOrder);
 
-    @Test
-    public void testRulesWithZeroMarkup() {
-        calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(0)));
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
-
-        assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(100.0)));
-    }
-
-    @Test
-    public void testRulesWithNegativeMarkup() {
-        calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(-5)));
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
-
-        assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(50.0)));
+        verifyMockRules(mockRules);
     }
 
 }

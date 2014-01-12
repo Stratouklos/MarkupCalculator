@@ -17,11 +17,10 @@ public class ValueCalculator {
     }
 
     public BigDecimal calculateTotalValue(Order order) {
-        BigDecimal value = order.getBaseValue();
         for (FinancialRule rule : rules) {
-            value = value.add(rule.applyTo(order));
+            rule.applyTo(order);
         }
-        return value;
+        return order.getTotalValue();
     }
 
 }

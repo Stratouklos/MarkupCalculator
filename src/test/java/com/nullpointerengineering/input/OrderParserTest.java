@@ -66,7 +66,7 @@ public class OrderParserTest {
         Order expectedOrder = OrderImpl.newOrder("20.22", 1, "drugs");
         Iterator<Order> orderIterator = orderParserUnderTest.getOrders().iterator();
         orderIterator.next();
-        Order actualOrder = orderParserUnderTest.getOrders().iterator().next();
+        Order actualOrder = orderIterator.next();
 
         assertThat(actualOrder, is(expectedOrder));
     }

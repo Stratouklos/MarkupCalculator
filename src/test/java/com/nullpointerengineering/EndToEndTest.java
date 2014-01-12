@@ -61,14 +61,8 @@ public class EndToEndTest {
 
         Iterator<Order> orders = orderParser.getOrders().iterator();
 
-        Order order1 = orders.next();
-        Order order2 = orders.next();
-
-        BigDecimal totalValue1 = calculator.calculateTotalValue(order1);
-        assertThat(totalValue1, is(BigDecimal.valueOf(6199.81)));
-
-        BigDecimal totalValue2 = calculator.calculateTotalValue(order2);
-        assertThat(totalValue2, is(BigDecimal.valueOf(1591.58)));
+        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(1591.58)));
+        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(6199.81)));
     }
 
 }

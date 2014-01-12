@@ -5,7 +5,7 @@ import com.nullpointerengineering.model.Order;
 import com.nullpointerengineering.model.OrderImpl;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +17,7 @@ public class ThreeLineOrderParser implements OrderRepository, Parser {
     private int workers = -1;
     private String money , type;
 
-    private Collection<Order> orders = new HashSet<>();
+    private Collection<Order> orders = new LinkedHashSet<>();
 
     public static final String SET_FIELDS_ONCE_ERROR = "Each field of an order can only be set once";
     public static final String INCOMPLETE_DATA_ERROR = "Incomplete data error, please ensure all data have been processed";

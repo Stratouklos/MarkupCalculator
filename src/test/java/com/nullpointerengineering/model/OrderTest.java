@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import static java.math.BigDecimal.valueOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -25,6 +26,44 @@ public class OrderTest {
     public void newOrderTest() {
         Order order = OrderImpl.newOrder("12223.22", 3, "food");
         assertThat(order.getType(), is("food"));
+        assertThat(order.getTotalValue(), is(valueOf(12223.22)));
+        assertThat(order.getWorkers(), is(3));
+    }
+
+    @Test
+    public void addBaseValueTest() {
+        Order order = OrderImpl.newOrder("12223.22", 3, "food");
+        order.addToBaseValue(valueOf(0.78));
+        assertThat(order.getBaseValue(), is(valueOf(12224.00).setScale(2)));
+    }
+
+    @Test
+    public void addToTotalValueTest() {
+        Order order = OrderImpl.newOrder("12223.22", 3, "food");
+        order.addToTotalValue(valueOf(0.78));
+        assertThat(order.getTotalValue(), is(valueOf(12224.00).setScale(2)));
+    }
+
+    @Test
+    public void addToTotalValueManyTimesTest() {
+        Order order = OrderImpl.newOrder("12223.22", 3, "food");
+        order.addToTotalValue(valueOf(0.78));
+        order.addToTotalValue(valueOf(0.22));
+        order.addToTotalValue(valueOf(0.11));
+        order.addToTotalValue(valueOf(800.0));
+
+        assertThat(order.getTotalValue(), is(valueOf(13024.33).setScale(2)));
+    }
+
+    @Test
+    public void addToBaseAndTotalValueManyTimesTest() {
+        Order order = OrderImpl.newOrder("12223.22", 3, "food");
+        order.addToBaseValue(valueOf(0.78));
+        order.addToTotalValue(valueOf(0.22));
+        order.addToTotalValue(valueOf(0.11));
+        order.addToTotalValue(valueOf(800.0));
+        assertThat(order.getTotalValue(), is(valueOf(13024.33).setScale(2)));
+        assertThat(order.getBaseValue(), is(valueOf(12224.00).setScale(2)));
     }
 
     @Test

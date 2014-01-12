@@ -1,6 +1,8 @@
 package com.nullpointerengineering.model;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,9 +11,10 @@ import java.math.BigDecimal;
  */
 public class OrderImpl implements Order {
 
+    private BigDecimal baseValue;
     private final int workers;
     private final String type;
-    private final BigDecimal orderValue;
+    private final Collection<BigDecimal> adjustments = new LinkedList<>();
 
     /**
      * Factory method for orders
@@ -31,10 +34,10 @@ public class OrderImpl implements Order {
         return new OrderImpl(orderValue, workers, type);
     }
 
-    private OrderImpl(BigDecimal orderValue, int workers, String type){
+    private OrderImpl(BigDecimal baseValue, int workers, String type){
         this.type = type;
         this.workers = workers;
-        this.orderValue = orderValue;
+        this.baseValue = baseValue;
     }
 
     @Override
@@ -48,8 +51,27 @@ public class OrderImpl implements Order {
     }
 
     @Override
-    public BigDecimal getOrderValue() {
-        return orderValue;
+    public BigDecimal getTotalValue() {
+        BigDecimal totalValue = BigDecimal.ZERO.add(baseValue);
+        for (BigDecimal adjustment : adjustments) {
+            totalValue = totalValue.add(adjustment);
+        }
+        return totalValue;
+    }
+
+    @Override
+    public BigDecimal getBaseValue() {
+        return baseValue;
+    }
+
+    @Override
+    public void addToBaseValue(BigDecimal valueToAdd) {
+        baseValue = baseValue.add(valueToAdd);
+    }
+
+    @Override
+    public void addToTotalValue(BigDecimal valueToAdd) {
+        adjustments.add(valueToAdd);
     }
 
     @Override
@@ -60,7 +82,8 @@ public class OrderImpl implements Order {
 
         return this.getType().equals(that.getType()) &&
                this.getWorkers() == that.getWorkers() &&
-               this.getOrderValue().equals(that.getOrderValue());
+               this.getBaseValue().equals(that.getBaseValue()) &&
+               this.getTotalValue().equals(that.getTotalValue());
     }
 
     @Override

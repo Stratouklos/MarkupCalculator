@@ -11,6 +11,9 @@ public interface Order {
 
     int getWorkers();
     String getType();
-    BigDecimal getOrderValue();
+    BigDecimal getBaseValue();
+    BigDecimal getTotalValue();
+    void addToBaseValue(BigDecimal valueToAdd);
+    void addToTotalValue(BigDecimal valueToAdd);
 
 }

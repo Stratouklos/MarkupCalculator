@@ -35,7 +35,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(1);
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
         BigDecimal expected = new BigDecimal("2.00");
@@ -47,7 +47,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(2);
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
         BigDecimal expected = new BigDecimal("4.00");
@@ -59,7 +59,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", BigDecimal.valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(0);
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
         BigDecimal expected = new BigDecimal("0.00");

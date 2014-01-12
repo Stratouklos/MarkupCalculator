@@ -21,7 +21,7 @@ public class ProductTypeMarkupRule implements FinancialRule {
     @Override
     public BigDecimal applyTo(Order order) {
         if (order.getType().equalsIgnoreCase(productType)) {
-            return order.getOrderValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
+            return order.getBaseValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
         } else {
             return BigDecimal.ZERO.setScale(RULE_SCALE);
         }

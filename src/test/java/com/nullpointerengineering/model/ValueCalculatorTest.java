@@ -37,7 +37,7 @@ public class ValueCalculatorTest {
     @Test
     public void testSingleRule() {
         calculatorUnderTest = new ValueCalculator(getMockRules(1, BigDecimal.valueOf(10.10)));
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100));
 
         assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(110.10)));
     }
@@ -45,7 +45,7 @@ public class ValueCalculatorTest {
     @Test
     public void testTenRules() {
         calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(5)));
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.0));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
 
         assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(150.0)));
     }
@@ -53,7 +53,7 @@ public class ValueCalculatorTest {
     @Test
     public void testRulesWithZeroMarkup() {
         calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(0)));
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.0));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
 
         assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(100.0)));
     }
@@ -61,7 +61,7 @@ public class ValueCalculatorTest {
     @Test
     public void testRulesWithNegativeMarkup() {
         calculatorUnderTest = new ValueCalculator(getMockRules(10, BigDecimal.valueOf(-5)));
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.0));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.0));
 
         assertThat(calculatorUnderTest.calculateTotalValue(mockOrder), is(BigDecimal.valueOf(50.0)));
     }

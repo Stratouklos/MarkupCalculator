@@ -33,7 +33,7 @@ public class ProductTypeMarkupRuleTest {
     @Test
     public void testMarkupForDrugs() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("drugs");
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
@@ -45,7 +45,7 @@ public class ProductTypeMarkupRuleTest {
     public void testMarkupForElectronics() {
         ruleUnderTest = ruleFactory.buildRule("markup", "electronics", ONE);
 
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);
@@ -57,7 +57,7 @@ public class ProductTypeMarkupRuleTest {
     public void testMarkupIsNotAppliedForOtherType() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
 
-        when(mockOrder.getOrderValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getTotalValue()).thenReturn(BigDecimal.valueOf(100.01));
         when(mockOrder.getType()).thenReturn("pets");
 
         BigDecimal actual = ruleUnderTest.applyTo(mockOrder);

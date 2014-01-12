@@ -56,7 +56,7 @@ public class OrderParsingModuleTest {
         lineReaderFromFile.read(parser);
         Order readOrder = parser.getOrders().iterator().next();
         BigDecimal expectedValue = new BigDecimal("1299.99");
-        assertThat(readOrder.getOrderValue(), is(expectedValue));
+        assertThat(readOrder.getTotalValue(), is(expectedValue));
     }
 
     @Test

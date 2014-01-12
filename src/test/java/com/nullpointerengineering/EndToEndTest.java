@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.nullpointerengineering.TestResources.FIVE_RULES_FILE;
+import static com.nullpointerengineering.TestResources.ONE_ORDER;
+import static com.nullpointerengineering.TestResources.TWO_ORDERS;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -25,14 +28,14 @@ public class EndToEndTest {
 
     @Test
     public void singleOrder() throws IOException {
-        LineReaderFromFile orderReader = new LineReaderFromFile("C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order");
+        LineReaderFromFile orderReader = new LineReaderFromFile(ONE_ORDER);
         ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
         orderReader.read(orderParser);
 
         Collection<Order> orders = orderParser.getOrders();
         Order order = orders.iterator().next();
 
-        LineReaderFromFile ruleReader = new LineReaderFromFile("C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\five_rules");
+        LineReaderFromFile ruleReader = new LineReaderFromFile(FIVE_RULES_FILE);
         FinancialRuleComparator ruleComparator = FinancialRuleComparator.first(FlatMarkupRule.class);
         RuleRepository ruleRepository =  new OrderedRuleRepository(ruleComparator);
         RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
@@ -48,10 +51,10 @@ public class EndToEndTest {
 
     @Test
     public void twoOrders() throws IOException {
-        LineReaderFromFile orderReader = new LineReaderFromFile("C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\two_orders");
+        LineReaderFromFile orderReader = new LineReaderFromFile(TWO_ORDERS);
         ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
         orderReader.read(orderParser);
-        LineReaderFromFile ruleReader = new LineReaderFromFile("C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\five_rules");
+        LineReaderFromFile ruleReader = new LineReaderFromFile(FIVE_RULES_FILE);
         FinancialRuleComparator ruleComparator = FinancialRuleComparator.first(FlatMarkupRule.class);
         RuleRepository ruleRepository =  new OrderedRuleRepository(ruleComparator);
         RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);

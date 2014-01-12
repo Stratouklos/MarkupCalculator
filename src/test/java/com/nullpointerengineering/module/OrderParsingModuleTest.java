@@ -12,6 +12,9 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+import static com.nullpointerengineering.TestResources.INCOMPLETE_ORDER;
+import static com.nullpointerengineering.TestResources.ONE_ORDER;
+import static com.nullpointerengineering.TestResources.TWO_ORDERS;
 import static com.nullpointerengineering.input.ThreeLineOrderParser.INCOMPLETE_DATA_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,9 +27,6 @@ import static org.junit.Assert.assertThat;
 @RunWith(JUnit4.class)
 public class OrderParsingModuleTest {
 
-    public static final String ONE_ORDER = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order";
-    public static final String TWO_ORDERS = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\two_orders";
-    public static final String INCOMPLETE_ORDER = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\incomplete_order";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

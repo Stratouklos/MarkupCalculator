@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.nullpointerengineering.TestResources.FIVE_RULES_FILE;
+import static com.nullpointerengineering.TestResources.ONE_RULE_FILE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -25,8 +27,6 @@ import static org.junit.Assert.assertThat;
 @RunWith(JUnit4.class)
 public class RuleParsingModuleTest {
 
-    public static final String ONE_RULE_FILE = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_rule";
-    public static final String FIVE_RULES_FILE = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\five_rules";
 
     LineReaderFromFile lineReaderFromFile;
     FinancialRuleComparator  comparator  = FinancialRuleComparator.first(FlatMarkupRule.class);

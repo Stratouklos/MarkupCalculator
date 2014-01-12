@@ -11,6 +11,7 @@ import org.mockito.verification.VerificationMode;
 
 import java.io.FileNotFoundException;
 
+import static com.nullpointerengineering.TestResources.ONE_ORDER;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -21,7 +22,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(JUnit4.class)
 public class LineReaderFromFileTest {
 
-    private static final String ONE_ORDER = "C:\\Users\\Stratos\\code\\markupCalculator\\src\\test\\resources\\one_order";
     private static final VerificationMode ONCE = VerificationModeFactory.times(1);
 
     @Rule

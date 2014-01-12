@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 import static com.nullpointerengineering.TestResources.FIVE_RULES_FILE;
 import static com.nullpointerengineering.TestResources.ONE_ORDER;
-import static com.nullpointerengineering.TestResources.TWO_ORDERS;
+import static com.nullpointerengineering.TestResources.THREE_ORDERS;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -51,7 +51,7 @@ public class EndToEndTest {
 
     @Test
     public void twoOrders() throws IOException {
-        LineReaderFromFile orderReader = new LineReaderFromFile(TWO_ORDERS);
+        LineReaderFromFile orderReader = new LineReaderFromFile(THREE_ORDERS);
         ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
         orderReader.read(orderParser);
         LineReaderFromFile ruleReader = new LineReaderFromFile(FIVE_RULES_FILE);
@@ -66,6 +66,7 @@ public class EndToEndTest {
 
         assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(1591.58)));
         assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(6199.81)));
+        assertThat(calculator.calculateTotalValue(orders.next()), is(BigDecimal.valueOf(13707.63)));
     }
 
 }

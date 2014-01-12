@@ -14,7 +14,7 @@ import java.util.Collection;
 
 import static com.nullpointerengineering.TestResources.INCOMPLETE_ORDER;
 import static com.nullpointerengineering.TestResources.ONE_ORDER;
-import static com.nullpointerengineering.TestResources.TWO_ORDERS;
+import static com.nullpointerengineering.TestResources.THREE_ORDERS;
 import static com.nullpointerengineering.input.ThreeLineOrderParser.INCOMPLETE_DATA_ERROR;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -43,11 +43,11 @@ public class OrderParsingModuleTest {
     }
 
     @Test
-    public void readTwoOrders() throws Exception {
-        lineReaderFromFile = new LineReaderFromFile(TWO_ORDERS);
+    public void readThreeOrders() throws Exception {
+        lineReaderFromFile = new LineReaderFromFile(THREE_ORDERS);
         lineReaderFromFile.read(parser);
         Collection<? super Order> orders = parser.getOrders();
-        assertThat(orders.size(), is(2));
+        assertThat(orders.size(), is(3));
     }
 
     @Test

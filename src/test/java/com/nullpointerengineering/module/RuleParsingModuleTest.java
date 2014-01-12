@@ -62,11 +62,11 @@ public class RuleParsingModuleTest {
         FinancialRule foodMarkupRule = new ProductTypeMarkupRule(BigDecimal.valueOf(13), "food");
         FinancialRule electronicsMarkupRule = new ProductTypeMarkupRule(BigDecimal.valueOf(2), "electronics");
 
+        assertThat(rules.next(), is(flatMarkupRule));
         assertThat(rules.next(), is(laborMarkupRule));
         assertThat(rules.next(), is(drugsMarkupRule));
         assertThat(rules.next(), is(foodMarkupRule));
         assertThat(rules.next(), is(electronicsMarkupRule));
-        assertThat(rules.next(), is(flatMarkupRule));
     }
 
 }

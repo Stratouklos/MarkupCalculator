@@ -1,5 +1,7 @@
 package com.nullpointerengineering.model;
 
+import com.google.common.base.Preconditions;
+
 import java.math.BigDecimal;
 
 /**
@@ -14,7 +16,7 @@ public class ProductTypeMarkupRule implements FinancialRule {
 
     public ProductTypeMarkupRule(BigDecimal markupPercentage, String productType) {
         this.markup = markupPercentage.divide(ONE_HUNDRED);
-        if(productType.trim().isEmpty()) throw new IllegalArgumentException("Type description cannot be empty");
+        Preconditions.checkArgument(!productType.trim().isEmpty(),"Type description cannot be empty");
         this.productType = productType;
     }
 

@@ -4,12 +4,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
  * Compares two financial rules ensuring the flat markup goes first
  */
 public class FinancialRuleComparator implements Comparator<FinancialRule> {
+
+    public static final String ERROR_MESSAGE = "Cannot assign different priorities to the same Rule";
 
     private final Map<Class<? extends FinancialRule>, Integer> rulePriorityMap = new HashMap<>();
 
@@ -22,7 +26,7 @@ public class FinancialRuleComparator implements Comparator<FinancialRule> {
     }
 
     public FinancialRuleComparator then(Class<? extends FinancialRule> ruleClass) {
-        if (rulePriorityMap.containsKey(ruleClass)) throw new IllegalArgumentException("Cannot assign different priorities to the same Rule");
+        checkArgument(!rulePriorityMap.containsKey(ruleClass), ERROR_MESSAGE);
         rulePriorityMap.put(ruleClass, rulePriorityMap.size());
         return this;
     }

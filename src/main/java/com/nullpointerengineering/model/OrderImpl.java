@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
@@ -28,10 +31,9 @@ public class OrderImpl implements Order {
      * @throws IllegalArgumentException if {@code workers} is zero or negative.
      */
     public static Order newOrder(String valueString, int workers, String type) {
-        if (workers <= 0 ) throw new IllegalArgumentException("The number of workers cannot be zero or bellow");
-        if (type == null) throw new NullPointerException("Order type cannot be null");
+        checkArgument(!(workers <= 0), "The number of workers cannot be zero or bellow");
         BigDecimal orderValue = new BigDecimal(valueString);
-        return new OrderImpl(orderValue, workers, type);
+        return new OrderImpl(orderValue, workers, checkNotNull(type, "Order type cannot be null"));
     }
 
     private OrderImpl(BigDecimal baseValue, int workers, String type){

@@ -1,19 +1,20 @@
 package com.nullpointerengineering.module;
 
-import com.nullpointerengineering.data.OrderedRuleRepository;
-import com.nullpointerengineering.data.RuleRepository;
-import com.nullpointerengineering.input.LineReaderFromFile;
+import com.google.common.collect.FluentIterable;
+import com.google.common.io.Files;
 import com.nullpointerengineering.input.RuleParser;
 import com.nullpointerengineering.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static com.nullpointerengineering.TestResources.FIVE_RULES_FILE;
 import static com.nullpointerengineering.TestResources.ONE_RULE_FILE;
 import static org.hamcrest.CoreMatchers.is;
@@ -27,34 +28,34 @@ import static org.junit.Assert.assertThat;
 @RunWith(JUnit4.class)
 public class RuleParsingModuleTest {
 
-
-    LineReaderFromFile lineReaderFromFile;
-    FinancialRuleComparator  comparator  = FinancialRuleComparator.first(FlatMarkupRule.class);
-    RuleRepository ruleRepository = new OrderedRuleRepository(comparator);
-
-    RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
-
     @Test
     public void readOneRule() throws IOException {
-        lineReaderFromFile = new LineReaderFromFile(ONE_RULE_FILE);
-        lineReaderFromFile.read(ruleParser);
-        Collection<FinancialRule> rules = ruleRepository.getRules();
+        Collection<FinancialRule> rules = FluentIterable.from(
+                Files.asCharSource(new File(ONE_RULE_FILE), UTF_8).readLines())
+                .transform(new RuleParser(new FinancialRuleFactory()))
+                .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class));
+
         assertThat(rules.size(), is(1));
     }
 
     @Test
     public void readFiveRules() throws IOException {
-        lineReaderFromFile = new LineReaderFromFile(FIVE_RULES_FILE);
-        lineReaderFromFile.read(ruleParser);
-        Collection<FinancialRule> rules = ruleRepository.getRules();
+        Collection<FinancialRule> rules = FluentIterable.from(
+                Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
+                .transform(new RuleParser(new FinancialRuleFactory()))
+                .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class));
+
         assertThat(rules.size(), is(5));
     }
 
     @Test
     public void testRulesReadCorrectly() throws IOException {
-        lineReaderFromFile = new LineReaderFromFile(FIVE_RULES_FILE);
-        lineReaderFromFile.read(ruleParser);
-        Iterator<FinancialRule> rules = ruleRepository.getRules().iterator();
+        Collection<FinancialRule> rulesCollection = FluentIterable.from(
+                Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
+                .transform(new RuleParser(new FinancialRuleFactory()))
+                .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class));
+
+        Iterator<FinancialRule> rules = rulesCollection.iterator();
 
         FinancialRule flatMarkupRule = new FlatMarkupRule(BigDecimal.valueOf(5));
         FinancialRule laborMarkupRule = new LaborMarkupRule(BigDecimal.valueOf(1.2));

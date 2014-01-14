@@ -1,6 +1,5 @@
 package com.nullpointerengineering.input;
 
-import com.nullpointerengineering.data.RuleRepository;
 import com.nullpointerengineering.model.FinancialRuleFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,7 +22,6 @@ import static org.mockito.Mockito.verify;
 public class RuleParserTest {
 
     FinancialRuleFactory mockFactory;
-    RuleRepository mockRepository;
     RuleParser parserUnderTest;
 
     @Rule
@@ -32,40 +30,39 @@ public class RuleParserTest {
     @Before
     public void setup() {
         mockFactory = mock(FinancialRuleFactory.class);
-        mockRepository = mock(RuleRepository.class);
-        parserUnderTest = new RuleParser(mockFactory,  mockRepository);
+        parserUnderTest = new RuleParser(mockFactory);
     }
 
     @Test
     public void flatMarkupTest() {
-        parserUnderTest.parse("flat_markup=5");
+        parserUnderTest.apply("flat_markup=5");
         verify(mockFactory).buildRule("markup", "flat", BigDecimal.valueOf(5));
     }
 
     @Test
     public void workerMarkupTest() {
-        parserUnderTest.parse("labor_markup=5");
+        parserUnderTest.apply("labor_markup=5");
 
         verify(mockFactory).buildRule("markup", "labor", BigDecimal.valueOf(5));
     }
 
     @Test
     public void drugsMarkupTest() {
-        parserUnderTest.parse("drugs_markup=5");
+        parserUnderTest.apply("drugs_markup=5");
 
         verify(mockFactory).buildRule("markup", "drugs", BigDecimal.valueOf(5));
     }
 
     @Test
     public void electronicsMarkupTest() {
-        parserUnderTest.parse("Electronics_markup=5");
+        parserUnderTest.apply("Electronics_markup=5");
 
         verify(mockFactory).buildRule("markup", "electronics", BigDecimal.valueOf(5));
     }
 
     @Test
     public void testDecimalMarkupValue() {
-        parserUnderTest.parse("Electronics_markup=5.05");
+        parserUnderTest.apply("Electronics_markup=5.05");
 
         verify(mockFactory).buildRule("markup", "electronics", BigDecimal.valueOf(5.05));
     }
@@ -75,14 +72,14 @@ public class RuleParserTest {
     public void testIllegalSeparatorUsedThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(RuleParser.BADLY_FORMATTED_RULE);
-        parserUnderTest.parse("electronics|markup=5");
+        parserUnderTest.apply("electronics|markup=5");
     }
 
     @Test
     public void testMissingValueThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(BADLY_FORMATTED_RULE);
-        parserUnderTest.parse("electronics_markup=");
+        parserUnderTest.apply("electronics_markup=");
 
     }
 
@@ -90,14 +87,14 @@ public class RuleParserTest {
     public void testNotUsingEqualsToSeparateLabelValueThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(BADLY_FORMATTED_RULE);
-        parserUnderTest.parse("electronics_markup:5");
+        parserUnderTest.apply("electronics_markup:5");
     }
 
     @Test
     public void testNonNumericalValueThrowsException() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(BADLY_FORMATTED_RULE);
-        parserUnderTest.parse("electronics_markup=five");
+        parserUnderTest.apply("electronics_markup=five");
     }
 
 }

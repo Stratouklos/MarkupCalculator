@@ -1,20 +1,19 @@
 package com.nullpointerengineering;
 
-import com.nullpointerengineering.data.OrderedRuleRepository;
-import com.nullpointerengineering.data.RuleRepository;
-import com.nullpointerengineering.input.LineReaderFromFile;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+import com.google.common.io.Files;
+import com.nullpointerengineering.input.OrderParser;
 import com.nullpointerengineering.input.RuleParser;
-import com.nullpointerengineering.input.ThreeLineOrderParser;
 import com.nullpointerengineering.model.*;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
 
-import static com.nullpointerengineering.TestResources.FIVE_RULES_FILE;
-import static com.nullpointerengineering.TestResources.ONE_ORDER;
-import static com.nullpointerengineering.TestResources.THREE_ORDERS;
+import static com.google.common.base.Charsets.UTF_8;
+import static com.nullpointerengineering.TestResources.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -27,43 +26,40 @@ public class EndToEndTest {
 
     @Test
     public void singleOrder() throws IOException {
-        LineReaderFromFile orderReader = new LineReaderFromFile(ONE_ORDER);
-        ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
-        orderReader.read(orderParser);
+        Iterator<String> outputs = FluentIterable.from(
+            Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
+            .transform(new OrderParser())
+            .filter(Predicates.notNull()).transform(
+                new ValueCalculator(
+                    FluentIterable.from(
+                        Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
+                        .transform(new RuleParser(new FinancialRuleFactory()))
+                        .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class))
+                )
+            )
+            .iterator();
 
-        Collection<Order> orders = orderParser.getOrders();
-        Order order = orders.iterator().next();
-
-        LineReaderFromFile ruleReader = new LineReaderFromFile(FIVE_RULES_FILE);
-        FinancialRuleComparator ruleComparator = FinancialRuleComparator.first(FlatMarkupRule.class);
-        RuleRepository ruleRepository =  new OrderedRuleRepository(ruleComparator);
-        RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
-        ruleReader.read(ruleParser);
-        Collection<FinancialRule> rules = ruleRepository.getRules();
-
-        ValueCalculator calculator = new ValueCalculator(rules);
-
-        assertThat(calculator.calculateTotalValue(order), is("$1591.58"));
+        assertThat(outputs.next(), is("$1591.58"));
     }
 
     @Test
-    public void twoOrders() throws IOException {
-        LineReaderFromFile orderReader = new LineReaderFromFile(THREE_ORDERS);
-        ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
-        orderReader.read(orderParser);
-        LineReaderFromFile ruleReader = new LineReaderFromFile(FIVE_RULES_FILE);
-        FinancialRuleComparator ruleComparator = FinancialRuleComparator.first(FlatMarkupRule.class);
-        RuleRepository ruleRepository =  new OrderedRuleRepository(ruleComparator);
-        RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
-        ruleReader.read(ruleParser);
-        Collection<FinancialRule> rules = ruleRepository.getRules();
-        ValueCalculator calculator = new ValueCalculator(rules);
+    public void threeOrders() throws IOException {
+        Iterator<String> outputs = FluentIterable.from(
+            Files.asCharSource(new File(THREE_ORDERS), UTF_8).readLines())
+            .transform(new OrderParser())
+            .filter(Predicates.notNull()).transform(
+                new ValueCalculator(
+                    FluentIterable.from(
+                        Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
+                        .transform(new RuleParser(new FinancialRuleFactory()))
+                        .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class))
+                )
+            )
+            .iterator();
 
-        Iterator<Order> orders = orderParser.getOrders().iterator();
-
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$1591.58"));
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$6199.81"));
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$13707.63"));
+        assertThat(outputs.next(), is("$1591.58"));
+        assertThat(outputs.next(), is("$6199.81"));
+        assertThat(outputs.next(), is("$13707.63"));
     }
 
 }

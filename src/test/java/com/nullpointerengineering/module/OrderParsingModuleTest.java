@@ -1,21 +1,22 @@
 package com.nullpointerengineering.module;
 
-import com.nullpointerengineering.input.LineReaderFromFile;
-import com.nullpointerengineering.input.ThreeLineOrderParser;
-import com.nullpointerengineering.model.Order;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+import com.google.common.io.Files;
+import com.nullpointerengineering.input.OrderParser;
+import com.nullpointerengineering.model.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.io.File;
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 
-import static com.nullpointerengineering.TestResources.INCOMPLETE_ORDER;
-import static com.nullpointerengineering.TestResources.ONE_ORDER;
-import static com.nullpointerengineering.TestResources.THREE_ORDERS;
-import static com.nullpointerengineering.input.ThreeLineOrderParser.INCOMPLETE_DATA_ERROR;
+import static com.google.common.base.Charsets.UTF_8;
+import static com.nullpointerengineering.TestResources.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -31,40 +32,50 @@ public class OrderParsingModuleTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    ThreeLineOrderParser parser = new ThreeLineOrderParser();
-    LineReaderFromFile lineReaderFromFile;
+    OrderParser parser = new OrderParser();
 
     @Test
     public void readOneOrder() throws Exception {
-        lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
-        lineReaderFromFile.read(parser);
-        Collection<? super Order> orders = parser.getOrders();
+        List<Order> orders = FluentIterable.from(
+                Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
+                .transform(parser)
+                .filter(Predicates.notNull())
+                .toList();
+
         assertThat(orders.size(), is(1));
     }
 
     @Test
     public void readThreeOrders() throws Exception {
-        lineReaderFromFile = new LineReaderFromFile(THREE_ORDERS);
-        lineReaderFromFile.read(parser);
-        Collection<? super Order> orders = parser.getOrders();
+        List<Order> orders = FluentIterable.from(
+                Files.asCharSource(new File(THREE_ORDERS), UTF_8).readLines())
+                .transform(parser)
+                .filter(Predicates.notNull())
+                .toList();
         assertThat(orders.size(), is(3));
     }
 
     @Test
     public void readValueCorrectly() throws Exception {
-        lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
-        lineReaderFromFile.read(parser);
-        Order readOrder = parser.getOrders().iterator().next();
+        Order readOrder = FluentIterable.from(
+                Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
+                .transform(parser)
+                .filter(Predicates.notNull())
+                .first()
+                .get();
+
         BigDecimal expectedValue = new BigDecimal("1299.99");
         assertThat(readOrder.getTotalValue(), is(expectedValue));
     }
 
     @Test
     public void readFromIncompleteData() throws Exception {
-        lineReaderFromFile = new LineReaderFromFile(INCOMPLETE_ORDER);
-        lineReaderFromFile.read(parser);
-        expectedException.expect(IllegalStateException.class);
-        expectedException.expectMessage(INCOMPLETE_DATA_ERROR);
-        parser.getOrders();
+        List<Order> readOrder = FluentIterable.from(
+                Files.asCharSource(new File(INCOMPLETE_ORDER), UTF_8).readLines())
+                .transform(parser)
+                .filter(Predicates.notNull())
+                .toList();
+
+        assertThat(readOrder.size(), is(0));
     }
 }

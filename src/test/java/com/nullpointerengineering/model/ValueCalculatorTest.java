@@ -45,7 +45,7 @@ public class ValueCalculatorTest {
         mockRules = getMockRules(1);
         calculatorUnderTest = new ValueCalculator(mockRules);
 
-        calculatorUnderTest.calculateTotalValue(mockOrder);
+        calculatorUnderTest.apply(mockOrder);
 
         verifyMockRules(mockRules);
     }
@@ -55,7 +55,7 @@ public class ValueCalculatorTest {
         mockRules = getMockRules(10);
         calculatorUnderTest = new ValueCalculator(mockRules);
 
-        calculatorUnderTest.calculateTotalValue(mockOrder);
+        calculatorUnderTest.apply(mockOrder);
 
         verifyMockRules(mockRules);
     }
@@ -65,7 +65,7 @@ public class ValueCalculatorTest {
         calculatorUnderTest = new ValueCalculator(mockRules);
 
         when(mockOrder.getTotalValue()).thenReturn(ONE);
-        String actual = calculatorUnderTest.calculateTotalValue(mockOrder);
+        String actual = calculatorUnderTest.apply(mockOrder);
 
         assertThat(actual, is("$1.00"));
     }
@@ -75,7 +75,7 @@ public class ValueCalculatorTest {
         calculatorUnderTest = new ValueCalculator(mockRules);
 
         when(mockOrder.getTotalValue()).thenReturn(valueOf(-1));
-        String actual = calculatorUnderTest.calculateTotalValue(mockOrder);
+        String actual = calculatorUnderTest.apply(mockOrder);
 
         assertThat(actual, is("$(1.00)"));
     }

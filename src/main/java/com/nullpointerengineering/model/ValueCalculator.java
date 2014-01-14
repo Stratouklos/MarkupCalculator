@@ -1,5 +1,7 @@
 package com.nullpointerengineering.model;
 
+import com.google.common.base.Function;
+
 import java.util.Collection;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Collection;
  * User: Stratos
  * Calculates value adjustments for orders based on financial rules.
  */
-public class ValueCalculator {
+public class ValueCalculator implements Function<Order, String>{
 
     private final Collection<FinancialRule> rules;
 
@@ -15,11 +17,11 @@ public class ValueCalculator {
         this.rules = rules;
     }
 
-    public String calculateTotalValue(Order order) {
+    @Override
+    public String apply(Order order) {
         for (FinancialRule rule : rules) {
             rule.applyTo(order);
         }
         return String.format("$%(.2f", order.getTotalValue());
     }
-
 }

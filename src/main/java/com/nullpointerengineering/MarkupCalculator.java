@@ -1,14 +1,17 @@
 package com.nullpointerengineering;
 
-import com.nullpointerengineering.data.OrderedRuleRepository;
-import com.nullpointerengineering.data.RuleRepository;
-import com.nullpointerengineering.input.LineReaderFromFile;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+import com.google.common.io.Files;
+import com.nullpointerengineering.input.OrderParser;
 import com.nullpointerengineering.input.RuleParser;
-import com.nullpointerengineering.input.ThreeLineOrderParser;
 import com.nullpointerengineering.model.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+
+import static com.google.common.base.Charsets.UTF_8;
 
 public class MarkupCalculator {
 
@@ -22,33 +25,27 @@ public class MarkupCalculator {
         }
 
         @SuppressWarnings("ConstantConditions")
-        String ordersFile = args[0];
-        String rulesFile = args[1];
-
-        LineReaderFromFile orderReader = new LineReaderFromFile(ordersFile);
-        ThreeLineOrderParser orderParser = new ThreeLineOrderParser();
-
-        LineReaderFromFile ruleReader = new LineReaderFromFile(rulesFile);
-        FinancialRuleComparator ruleComparator = FinancialRuleComparator.first(FlatMarkupRule.class);
-        RuleRepository ruleRepository =  new OrderedRuleRepository(ruleComparator);
-        RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
+        File ordersFile = new File(args[0]);
+        File rulesFile = new File(args[1]);
 
         try {
-            orderReader.read(orderParser);
-            ruleReader.read(ruleParser);
+            Collection<String> outputs = FluentIterable.from(
+                    Files.asCharSource(ordersFile, UTF_8).readLines())
+                    .transform(new OrderParser())
+                    .filter(Predicates.notNull()).transform(
+                    new ValueCalculator(
+                            FluentIterable.from(
+                                    Files.asCharSource(rulesFile, UTF_8).readLines())
+                                    .transform(new RuleParser(new FinancialRuleFactory()))
+                                    .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class))
+                    )
+            ).toList();
+            for (String output : outputs){
+                System.out.println(output);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Collection<FinancialRule> rules = ruleRepository.getRules();
-        ValueCalculator calculator = new ValueCalculator(rules);
-
-        Collection<Order> orders = orderParser.getOrders();
-
-        for (Order order : orders) {
-            System.out.println(calculator.calculateTotalValue(order));
-        }
-
     }
 
     private static void printUsage() {

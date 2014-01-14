@@ -1,59 +1,42 @@
 package com.nullpointerengineering.input;
 
-import com.nullpointerengineering.data.OrderRepository;
+import com.google.common.base.Function;
 import com.nullpointerengineering.model.Order;
 import com.nullpointerengineering.model.OrderImpl;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
  * An object to parse strings into Orders it uses internal state heavily and it's NOT thread safe
  */
-public class ThreeLineOrderParser implements OrderRepository, Parser {
+public class OrderParser implements Function<String, Order> {
 
     private int workers = -1;
     private String money , type;
 
-    private Collection<Order> orders = new LinkedHashSet<>();
 
     public static final String SET_FIELDS_ONCE_ERROR = "Each field of an order can only be set once";
-    public static final String INCOMPLETE_DATA_ERROR = "Incomplete data error, please ensure all data have been processed";
     public static final String ILLEGAL_LINE_FORMAT_ERROR = "Illegal line format";
 
     private static final String MONEY_PATTERN = "\\$\\d+\\.\\d{2}";
     private static final String WORKERS_PATTERN = "\\d+ (people|person)";
     private static final String TYPE_PATTERN = "[a-zA-Z]*";
 
-    /**
-     * Parse a line of data to create orders.
-     * @param dataLine A line of data
-     * @throws IllegalArgumentException
-     * @throws IllegalStateException
-     */
-    @Override
-    public void parse(String dataLine){
-        if (dataLine.trim().isEmpty()) return;
+    public Order apply(String dataLine){
+        if (dataLine.trim().isEmpty()) return null;
 
         if ( checkAndReadMoney(dataLine) || checkAndReadWorkers(dataLine) || checkAndReadType(dataLine) ) {
             //Something was successfully read check to see if there is enough data to complete an order
             if (orderIsReady()) {
-                orders.add(OrderImpl.newOrder(money, workers, type));
+                Order order = OrderImpl.newOrder(money, workers, type);
                 resetValues();
+                return order;
             }
         } else {
             //The line was not consumed by any of the parsing methods, something is wrong
             throw new IllegalArgumentException(ILLEGAL_LINE_FORMAT_ERROR);
         }
-    }
-
-    @Override
-    public Collection<Order> getOrders() {
-        if (moneyIsSet() || typeIsSet() || workersAreSet())
-            throw new IllegalStateException(INCOMPLETE_DATA_ERROR);
-        return orders;
+        return null;
     }
 
     private boolean checkAndReadMoney(String line) {

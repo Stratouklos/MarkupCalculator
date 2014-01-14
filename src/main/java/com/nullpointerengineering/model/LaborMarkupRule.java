@@ -1,6 +1,10 @@
 package com.nullpointerengineering.model;
 
+import com.google.common.hash.Hashing;
+
 import java.math.BigDecimal;
+
+import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,9 +48,11 @@ public class LaborMarkupRule implements FinancialRule {
 
     @Override
     public int hashCode() {
-        int hash = 603;
-        hash = hash * 76 + markup.hashCode();
-        return hash;
+        return Hashing.md5()
+                .newHasher()
+                .putString(markup.toString(), UTF_8)
+                .hash()
+                .asInt();
     }
 
 }

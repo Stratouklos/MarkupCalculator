@@ -1,8 +1,11 @@
 package com.nullpointerengineering.model;
 
 import com.google.common.base.Preconditions;
+import com.google.common.hash.Hashing;
 
 import java.math.BigDecimal;
+
+import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,10 +58,12 @@ public class ProductTypeMarkupRule implements FinancialRule {
 
     @Override
     public int hashCode() {
-        int hash = 903;
-        hash = hash * 11 + markup.hashCode();
-        hash = hash * 11 + productType.hashCode();
-        return hash;
+        return Hashing.md5()
+                .newHasher()
+                .putString(productType, UTF_8)
+                .putString(markup.toString(), UTF_8)
+                .hash()
+                .asInt();
     }
 
 }

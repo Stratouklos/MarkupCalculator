@@ -1,9 +1,12 @@
 package com.nullpointerengineering.model;
 
+import com.google.common.hash.Hashing;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -90,10 +93,13 @@ public class OrderImpl implements Order {
 
     @Override
     public int hashCode() {
-        int hash = 1;
-        hash = hash * 42 + workers;
-        hash = hash * 22 + type.hashCode();
-        hash = hash * 19 + type.hashCode();
-        return hash;
+        return Hashing.md5()
+            .newHasher()
+            .putInt(workers)
+            .putString(type, UTF_8)
+            .putString(getTotalValue().toString(), UTF_8)
+            .putString(getBaseValue().toString(), UTF_8)
+            .hash()
+            .asInt();
     }
 }

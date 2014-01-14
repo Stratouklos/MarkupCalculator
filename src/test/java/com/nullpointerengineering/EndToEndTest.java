@@ -25,11 +25,17 @@ import static org.junit.Assert.assertThat;
 public class EndToEndTest {
 
     @Test
+    public void main() throws IOException {
+        MarkupCalculator.main(new String[]{THREE_ORDERS, FIVE_RULES_FILE});
+    }
+
+    @Test
     public void singleOrder() throws IOException {
         Iterator<String> outputs = FluentIterable.from(
             Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
             .transform(new OrderParser())
-            .filter(Predicates.notNull()).transform(
+            .filter(Predicates.notNull())
+            .transform(
                 new ValueCalculator(
                     FluentIterable.from(
                         Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())

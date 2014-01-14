@@ -85,16 +85,16 @@ public class ProductTypeMarkupRuleTest {
 
     @Test
     public void testHashCode() {
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", ONE);
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", ONE);
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", ONE);
 
         assertEquals(rule1.hashCode(), rule2.hashCode());
     }
 
     @Test
     public void testEquals() {
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "labor", ONE);
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "labor", ONE);
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", ONE);
 
         assertEquals(rule1, rule2);
         assertEquals(rule2, rule1);

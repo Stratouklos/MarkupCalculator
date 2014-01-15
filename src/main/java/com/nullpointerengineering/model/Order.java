@@ -13,6 +13,7 @@ public interface Order {
     String getType();
     BigDecimal getBaseValue();
     BigDecimal getTotalValue();
+    String getPrintableTotalValue();
     void addToBaseValue(BigDecimal valueToAdd);
     void addToTotalValue(BigDecimal valueToAdd);
 

@@ -1,5 +1,6 @@
 package com.nullpointerengineering;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
@@ -33,18 +34,27 @@ public class MarkupCalculator {
         RuleParser ruleParser = new RuleParser(new FinancialRuleFactory());
         Comparator<FinancialRule> flatMarkupFirst = FinancialRuleComparator.first(FlatMarkupRule.class);
         Joiner newLineJoiner = Joiner.on(NL);
+        Function<Order,String> totalValueReader =
+            new Function<Order, String>() {
+                @Override
+                public String apply(Order order) {
+                    return order.getPrintableTotalValue();
+                }
+            };
+
         try {
             Collection<FinancialRule> rules = FluentIterable.from(Files.asCharSource(rulesFile, UTF_8).readLines())
                     .transform(ruleParser)
                     .toSortedList(flatMarkupFirst);
 
-            Collection<String> outputs = FluentIterable.from(Files.asCharSource(ordersFile, UTF_8).readLines())
+            Collection<String> values = FluentIterable.from(Files.asCharSource(ordersFile, UTF_8).readLines())
                     .transform(orderParser)
                     .filter(Predicates.notNull())
                     .transform( new ValueCalculator( rules))
+                    .transform(totalValueReader)
                     .toList();
 
-            System.out.print( newLineJoiner.join(outputs));
+            System.out.print( newLineJoiner.join(values));
 
         } catch (IOException e) {
             e.printStackTrace();

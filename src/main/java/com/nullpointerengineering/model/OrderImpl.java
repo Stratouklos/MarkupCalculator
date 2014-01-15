@@ -65,6 +65,11 @@ public class OrderImpl implements Order {
     }
 
     @Override
+    public String getPrintableTotalValue() {
+        return String.format("$%(.2f", this.getTotalValue());
+    }
+
+    @Override
     public BigDecimal getBaseValue() {
         return baseValue;
     }

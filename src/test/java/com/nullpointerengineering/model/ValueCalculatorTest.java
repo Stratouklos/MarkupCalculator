@@ -7,10 +7,6 @@ import org.junit.runners.JUnit4;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static java.math.BigDecimal.ONE;
-import static java.math.BigDecimal.valueOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -58,26 +54,6 @@ public class ValueCalculatorTest {
         calculatorUnderTest.apply(mockOrder);
 
         verifyMockRules(mockRules);
-    }
-
-    @Test
-    public void testCalculateMethod() {
-        calculatorUnderTest = new ValueCalculator(mockRules);
-
-        when(mockOrder.getTotalValue()).thenReturn(ONE);
-        String actual = calculatorUnderTest.apply(mockOrder);
-
-        assertThat(actual, is("$1.00"));
-    }
-
-    @Test
-    public void testCalculateMethodWithNegativeResult() {
-        calculatorUnderTest = new ValueCalculator(mockRules);
-
-        when(mockOrder.getTotalValue()).thenReturn(valueOf(-1));
-        String actual = calculatorUnderTest.apply(mockOrder);
-
-        assertThat(actual, is("$(1.00)"));
     }
 
 }

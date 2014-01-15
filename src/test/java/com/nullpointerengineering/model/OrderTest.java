@@ -109,4 +109,19 @@ public class OrderTest {
         assertEquals(order2, order1);
     }
 
+    @Test
+    public void testPrintableTotalValue() {
+        Order order = OrderImpl.newOrder("1.00", 3, "kittens");
+
+        assertThat(order.getPrintableTotalValue(), is("$1.00"));
+    }
+
+    @Test
+    public void testCalculateMethodWithNegativeResult() {
+        Order order = OrderImpl.newOrder("-1.00", 3, "kittens");
+
+        assertThat(order.getPrintableTotalValue(), is("$(1.00)"));
+    }
+
+
 }

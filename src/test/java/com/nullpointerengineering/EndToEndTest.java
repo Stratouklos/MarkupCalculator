@@ -6,10 +6,12 @@ import com.google.common.io.Files;
 import com.nullpointerengineering.input.OrderParser;
 import com.nullpointerengineering.input.RuleParser;
 import com.nullpointerengineering.model.*;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import static com.google.common.base.Charsets.UTF_8;
@@ -24,6 +26,19 @@ import static org.junit.Assert.assertThat;
  */
 public class EndToEndTest {
 
+    Collection<FinancialRule> rules;
+    ValueCalculator valueCalculator;
+    @Before
+    public void setup() throws IOException {
+        rules = FluentIterable.from(
+                Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
+                .transform(new RuleParser(new FinancialRuleFactory()))
+                .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class));
+
+        valueCalculator = new ValueCalculator(rules);
+
+    }
+
     @Test
     public void main() throws IOException {
         MarkupCalculator.main(new String[]{THREE_ORDERS, FIVE_RULES_FILE});
@@ -31,41 +46,27 @@ public class EndToEndTest {
 
     @Test
     public void singleOrder() throws IOException {
-        Iterator<String> outputs = FluentIterable.from(
+        Iterator<Order> orders = FluentIterable.from(
             Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
             .transform(new OrderParser())
             .filter(Predicates.notNull())
-            .transform(
-                new ValueCalculator(
-                    FluentIterable.from(
-                        Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
-                        .transform(new RuleParser(new FinancialRuleFactory()))
-                        .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class))
-                )
-            )
+            .transform(valueCalculator)
             .iterator();
 
-        assertThat(outputs.next(), is("$1591.58"));
+        assertThat(orders.next().getPrintableTotalValue(), is("$1591.58"));
     }
 
     @Test
     public void threeOrders() throws IOException {
-        Iterator<String> outputs = FluentIterable.from(
+        Iterator<Order> orders = FluentIterable.from(
             Files.asCharSource(new File(THREE_ORDERS), UTF_8).readLines())
             .transform(new OrderParser())
-            .filter(Predicates.notNull()).transform(
-                new ValueCalculator(
-                    FluentIterable.from(
-                        Files.asCharSource(new File(FIVE_RULES_FILE), UTF_8).readLines())
-                        .transform(new RuleParser(new FinancialRuleFactory()))
-                        .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class))
-                )
-            )
+            .filter(Predicates.notNull()).transform(valueCalculator)
             .iterator();
 
-        assertThat(outputs.next(), is("$1591.58"));
-        assertThat(outputs.next(), is("$6199.81"));
-        assertThat(outputs.next(), is("$13707.63"));
+        assertThat(orders.next().getPrintableTotalValue(), is("$1591.58"));
+        assertThat(orders.next().getPrintableTotalValue(), is("$6199.81"));
+        assertThat(orders.next().getPrintableTotalValue(), is("$13707.63"));
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Collection;
  * User: Stratos
  * Calculates value adjustments for orders based on financial rules.
  */
-public class ValueCalculator implements Function<Order, String>{
+public class ValueCalculator implements Function<Order, Order>{
 
     private final Collection<FinancialRule> rules;
 
@@ -18,10 +18,10 @@ public class ValueCalculator implements Function<Order, String>{
     }
 
     @Override
-    public String apply(Order order) {
+    public Order apply(Order order) {
         for (FinancialRule rule : rules) {
             rule.applyTo(order);
         }
-        return String.format("$%(.2f", order.getTotalValue());
+        return order;
     }
 }

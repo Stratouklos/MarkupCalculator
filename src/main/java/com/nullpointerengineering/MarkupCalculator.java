@@ -10,6 +10,7 @@ import com.nullpointerengineering.model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Comparator;
 
 import static com.google.common.base.Charsets.UTF_8;
@@ -33,19 +34,17 @@ public class MarkupCalculator {
         Comparator<FinancialRule> flatMarkupFirst = FinancialRuleComparator.first(FlatMarkupRule.class);
         Joiner newLineJoiner = Joiner.on(NL);
         try {
-            System.out.print(
-                newLineJoiner.join(
-                    FluentIterable.from(Files.asCharSource(ordersFile, UTF_8).readLines())
+            Collection<FinancialRule> rules = FluentIterable.from(Files.asCharSource(rulesFile, UTF_8).readLines())
+                    .transform(ruleParser)
+                    .toSortedList(flatMarkupFirst);
+
+            Collection<String> outputs = FluentIterable.from(Files.asCharSource(ordersFile, UTF_8).readLines())
                     .transform(orderParser)
-                    .filter(Predicates.notNull()).transform(
-                        new ValueCalculator(
-                            FluentIterable.from(Files.asCharSource(rulesFile, UTF_8).readLines())
-                            .transform(ruleParser)
-                            .toSortedList(flatMarkupFirst)
-                        )
-                    )
-                )
-            );
+                    .filter(Predicates.notNull())
+                    .transform( new ValueCalculator( rules))
+                    .toList();
+
+            System.out.print( newLineJoiner.join(outputs));
 
         } catch (IOException e) {
             e.printStackTrace();

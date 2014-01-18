@@ -9,11 +9,11 @@ import java.util.LinkedList;
  * User: Stratos
  * Order value object
  */
-public class OrderImpl implements Order {
+public class OrderWithTrails implements Order {
 
-    private BigDecimal baseValue;
     private final int workers;
     private final String type;
+    private final Collection<BigDecimal> baseValueAdjustments = new LinkedList<>();
     private final Collection<BigDecimal> adjustments = new LinkedList<>();
 
     /**
@@ -31,13 +31,13 @@ public class OrderImpl implements Order {
         if (workers <= 0 ) throw new IllegalArgumentException("The number of workers cannot be zero or bellow");
         if (type == null) throw new NullPointerException("Order type cannot be null");
         BigDecimal orderValue = new BigDecimal(valueString);
-        return new OrderImpl(orderValue, workers, type);
+        return new OrderWithTrails(orderValue, workers, type);
     }
 
-    private OrderImpl(BigDecimal baseValue, int workers, String type){
+    private OrderWithTrails(BigDecimal baseValue, int workers, String type){
         this.type = type;
         this.workers = workers;
-        this.baseValue = baseValue;
+        baseValueAdjustments.add(baseValue);
     }
 
     @Override
@@ -52,21 +52,17 @@ public class OrderImpl implements Order {
 
     @Override
     public BigDecimal getTotalValue() {
-        BigDecimal totalValue = BigDecimal.ZERO.add(baseValue);
-        for (BigDecimal adjustment : adjustments) {
-            totalValue = totalValue.add(adjustment);
-        }
-        return totalValue;
+        return getBaseValue().add(addUp(adjustments));
     }
 
     @Override
     public BigDecimal getBaseValue() {
-        return baseValue;
+        return addUp(baseValueAdjustments);
     }
 
     @Override
     public void addToBaseValue(BigDecimal valueToAdd) {
-        baseValue = baseValue.add(valueToAdd);
+        baseValueAdjustments.add(valueToAdd);
     }
 
     @Override
@@ -74,10 +70,19 @@ public class OrderImpl implements Order {
         adjustments.add(valueToAdd);
     }
 
+    private BigDecimal addUp(Collection<BigDecimal> decimals) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (BigDecimal decimal : decimals) {
+            total = total.add(decimal);
+        }
+        return total;
+    }
+
+    //Equals and hashcode implemented for testing reasons not necessary to be too strict
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (! (object instanceof OrderImpl)) return false;
+        if (! (object instanceof OrderWithTrails)) return false;
         Order that = (Order) object;
 
         return this.getType().equals(that.getType()) &&
@@ -91,7 +96,8 @@ public class OrderImpl implements Order {
         int hash = 1;
         hash = hash * 42 + workers;
         hash = hash * 22 + type.hashCode();
-        hash = hash * 19 + type.hashCode();
+        hash = hash * 21 + getBaseValue().hashCode();
+        hash = hash * 19 + getTotalValue().hashCode();
         return hash;
     }
 }

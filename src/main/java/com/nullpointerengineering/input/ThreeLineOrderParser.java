@@ -2,7 +2,7 @@ package com.nullpointerengineering.input;
 
 import com.nullpointerengineering.data.OrderRepository;
 import com.nullpointerengineering.model.Order;
-import com.nullpointerengineering.model.OrderImpl;
+import com.nullpointerengineering.model.OrderWithTrails;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -40,7 +40,7 @@ public class ThreeLineOrderParser implements OrderRepository, Parser {
         if ( checkAndReadMoney(dataLine) || checkAndReadWorkers(dataLine) || checkAndReadType(dataLine) ) {
             //Something was successfully read check to see if there is enough data to complete an order
             if (orderIsReady()) {
-                orders.add(OrderImpl.newOrder(money, workers, type));
+                orders.add(OrderWithTrails.newOrder(money, workers, type));
                 resetValues();
             }
         } else {

@@ -23,7 +23,7 @@ public class LaborMarkupRuleTest {
 
     FinancialRuleFactory ruleFactory = new FinancialRuleFactory();
     FinancialRule ruleUnderTest;
-    Order mockOrder = mock(OrderImpl.class);
+    Order mockOrder = mock(OrderWithTrails.class);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

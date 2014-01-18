@@ -13,8 +13,8 @@ public class OrderWithTrails implements Order {
 
     private final int workers;
     private final String type;
-    private final Collection<BigDecimal> baseValueAdjustments = new LinkedList<>();
-    private final Collection<BigDecimal> adjustments = new LinkedList<>();
+    private final Collection<Money> baseValueAdjustments = new LinkedList<>();
+    private final Collection<Money> adjustments = new LinkedList<>();
 
     /**
      * Factory method for orders
@@ -30,11 +30,11 @@ public class OrderWithTrails implements Order {
     public static Order newOrder(String valueString, int workers, String type) {
         if (workers <= 0 ) throw new IllegalArgumentException("The number of workers cannot be zero or bellow");
         if (type == null) throw new NullPointerException("Order type cannot be null");
-        BigDecimal orderValue = new BigDecimal(valueString);
+        Money orderValue = new ImmutableMoney(valueString);
         return new OrderWithTrails(orderValue, workers, type);
     }
 
-    private OrderWithTrails(BigDecimal baseValue, int workers, String type){
+    private OrderWithTrails(Money baseValue, int workers, String type){
         this.type = type;
         this.workers = workers;
         baseValueAdjustments.add(baseValue);
@@ -62,20 +62,20 @@ public class OrderWithTrails implements Order {
 
     @Override
     public void addToBaseValue(BigDecimal valueToAdd) {
-        baseValueAdjustments.add(valueToAdd);
+        baseValueAdjustments.add(new ImmutableMoney(valueToAdd));
     }
 
     @Override
     public void addToTotalValue(BigDecimal valueToAdd) {
-        adjustments.add(valueToAdd);
+        adjustments.add(new ImmutableMoney(valueToAdd));
     }
 
-    private BigDecimal addUp(Collection<BigDecimal> decimals) {
-        BigDecimal total = BigDecimal.ZERO;
-        for (BigDecimal decimal : decimals) {
-            total = total.add(decimal);
+    private BigDecimal addUp(Collection<Money> moneys) {
+        Money total = new ImmutableMoney("0");
+        for (Money money : moneys) {
+            total = total.add(money);
         }
-        return total;
+        return total.getValue();
     }
 
     //Equals and hashcode implemented for testing reasons not necessary to be too strict

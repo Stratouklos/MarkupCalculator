@@ -39,7 +39,7 @@ public class LaborMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(2).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney("2"));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LaborMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(4).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney("4"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class LaborMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(ZERO.setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney(ZERO));
     }
 
     @Test

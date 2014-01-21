@@ -20,7 +20,7 @@ public class LaborMarkupRule implements FinancialRule {
     public void applyTo(Order order) {
         BigDecimal totalMarkup  = markup.multiply(BigDecimal.valueOf(order.getWorkers()));
         BigDecimal adjustment = order.getBaseValue().multiply(totalMarkup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
-        order.addToTotalValue(adjustment);
+        order.addToTotalValue(new ImmutableMoney(adjustment));
     }
 
     @Override

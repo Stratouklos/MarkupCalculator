@@ -14,6 +14,6 @@ public interface Order {
     BigDecimal getBaseValue();
     BigDecimal getTotalValue();
     void addToBaseValue(Money valueToAdd);
-    void addToTotalValue(BigDecimal valueToAdd);
+    void addToTotalValue(Money valueToAdd);
 
 }

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.valueOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +38,7 @@ public class ProductTypeMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney(ONE));
     }
 
     @Test
@@ -51,7 +50,7 @@ public class ProductTypeMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney(ONE));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class ProductTypeMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder, never()).addToTotalValue(Matchers.any(BigDecimal.class));
+        verify(mockOrder, never()).addToTotalValue(Matchers.any(Money.class));
     }
 
     @Test

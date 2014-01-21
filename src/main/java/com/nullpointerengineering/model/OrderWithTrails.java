@@ -66,8 +66,8 @@ public class OrderWithTrails implements Order {
     }
 
     @Override
-    public void addToTotalValue(BigDecimal valueToAdd) {
-        adjustments.add(new ImmutableMoney(valueToAdd));
+    public void addToTotalValue(Money valueToAdd) {
+        adjustments.add(valueToAdd);
     }
 
     private BigDecimal addUp(Collection<Money> moneys) {

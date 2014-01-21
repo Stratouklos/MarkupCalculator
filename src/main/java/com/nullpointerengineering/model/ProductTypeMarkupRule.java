@@ -22,7 +22,7 @@ public class ProductTypeMarkupRule implements FinancialRule {
     public void applyTo(Order order) {
         if (order.getType().equalsIgnoreCase(productType)) {
             BigDecimal adjustment = order.getBaseValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
-            order.addToTotalValue(adjustment);
+            order.addToTotalValue(new ImmutableMoney(adjustment));
         }
     }
 

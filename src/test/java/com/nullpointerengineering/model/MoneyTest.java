@@ -10,6 +10,8 @@ import java.util.Currency;
 
 import static java.math.BigDecimal.valueOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -108,4 +110,27 @@ public class MoneyTest {
         moneyUnderTest.add(euro);
     }
 
+    @Test
+    public void testHashCode() {
+        Money money1 = new ImmutableMoney("100");
+        Money money2 = new ImmutableMoney("100");
+
+        assertEquals(money1.hashCode(), money2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        Money money1 = new ImmutableMoney("100");
+        Money money2 = new ImmutableMoney("100");
+
+        assertEquals(money1, money2);
+    }
+
+    @Test
+    public void testNotEquals() {
+        Money money1 = new ImmutableMoney("101");
+        Money money2 = new ImmutableMoney("100");
+
+        assertNotEquals(money1, money2);
+    }
 }

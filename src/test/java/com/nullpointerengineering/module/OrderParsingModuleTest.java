@@ -2,6 +2,8 @@ package com.nullpointerengineering.module;
 
 import com.nullpointerengineering.input.LineReaderFromFile;
 import com.nullpointerengineering.input.ThreeLineOrderParser;
+import com.nullpointerengineering.model.ImmutableMoney;
+import com.nullpointerengineering.model.Money;
 import com.nullpointerengineering.model.Order;
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,7 +11,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
 import static com.nullpointerengineering.TestResources.INCOMPLETE_ORDER;
@@ -55,7 +56,7 @@ public class OrderParsingModuleTest {
         lineReaderFromFile = new LineReaderFromFile(ONE_ORDER);
         lineReaderFromFile.read(parser);
         Order readOrder = parser.getOrders().iterator().next();
-        BigDecimal expectedValue = new BigDecimal("1299.99");
+        Money expectedValue = new ImmutableMoney("1299.99");
         assertThat(readOrder.getTotalValue(), is(expectedValue));
     }
 

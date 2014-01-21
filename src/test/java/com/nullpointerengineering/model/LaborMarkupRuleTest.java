@@ -35,7 +35,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(1);
-        when(mockOrder.getBaseValue()).thenReturn(valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -47,7 +47,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(2);
-        when(mockOrder.getBaseValue()).thenReturn(valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -59,7 +59,7 @@ public class LaborMarkupRuleTest {
         ruleUnderTest = ruleFactory.buildRule("markup", "labor", valueOf(2));
 
         when(mockOrder.getWorkers()).thenReturn(0);
-        when(mockOrder.getBaseValue()).thenReturn(valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 

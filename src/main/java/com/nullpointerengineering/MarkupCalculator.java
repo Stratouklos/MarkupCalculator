@@ -41,12 +41,14 @@ public class MarkupCalculator {
         }
 
         Collection<FinancialRule> rules = ruleRepository.getRules();
-        ValueCalculator calculator = new ValueCalculator(rules);
 
         Collection<Order> orders = orderParser.getOrders();
 
         for (Order order : orders) {
-            System.out.println(calculator.calculateTotalValue(order));
+            for (FinancialRule rule : rules) {
+                rule.applyTo(order);
+                System.out.println(order.getTotalValue().toString());
+            }
         }
 
     }

@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Matchers;
 
-import java.math.BigDecimal;
-
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static org.hamcrest.CoreMatchers.is;
@@ -33,19 +31,19 @@ public class ProductTypeMarkupRuleTest {
     @Test
     public void testMarkupForDrugs() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("drugs");
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(new ImmutableMoney(ONE));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney("1.00"));
     }
 
     @Test
     public void testMarkupForElectronics() {
         ruleUnderTest = ruleFactory.buildRule("markup", "electronics", ONE);
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
         ruleUnderTest.applyTo(mockOrder);
@@ -57,7 +55,7 @@ public class ProductTypeMarkupRuleTest {
     public void testMarkupIsNotAppliedForOtherType() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
 
-        when(mockOrder.getTotalValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getTotalValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("pets");
 
         ruleUnderTest.applyTo(mockOrder);

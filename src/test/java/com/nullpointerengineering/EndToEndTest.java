@@ -41,9 +41,11 @@ public class EndToEndTest {
         ruleReader.read(ruleParser);
         Collection<FinancialRule> rules = ruleRepository.getRules();
 
-        ValueCalculator calculator = new ValueCalculator(rules);
+        for (FinancialRule rule : rules) {
+            rule.applyTo(order);
+        }
 
-        assertThat(calculator.calculateTotalValue(order), is("$1591.58"));
+        assertThat(order.getTotalValue().toString(), is("$1591.58"));
     }
 
     @Test
@@ -57,13 +59,20 @@ public class EndToEndTest {
         RuleParser ruleParser = new RuleParser(new FinancialRuleFactory(), ruleRepository);
         ruleReader.read(ruleParser);
         Collection<FinancialRule> rules = ruleRepository.getRules();
-        ValueCalculator calculator = new ValueCalculator(rules);
 
-        Iterator<Order> orders = orderParser.getOrders().iterator();
+        Collection<Order> orders = orderParser.getOrders();
 
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$1591.58"));
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$6199.81"));
-        assertThat(calculator.calculateTotalValue(orders.next()), is("$13707.63"));
+        for (Order order : orders) {
+            for (FinancialRule rule : rules) {
+                rule.applyTo(order);
+            }
+        }
+
+        Iterator<Order> orderIterator = orders.iterator();
+
+        assertThat(orderIterator.next().getTotalValue().toString(), is("$1591.58"));
+        assertThat(orderIterator.next().getTotalValue().toString(), is("$6199.81"));
+        assertThat(orderIterator.next().getTotalValue().toString(), is("$13707.63"));
     }
 
 }

@@ -2,6 +2,8 @@ package com.nullpointerengineering.model;
 
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.valueOf;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
@@ -10,17 +12,17 @@ import java.math.BigDecimal;
 
 public class LaborMarkupRule implements FinancialRule {
 
-    private final BigDecimal markup;
+    private final BigDecimal markupPercentagePerWorker;
 
     public LaborMarkupRule(BigDecimal markupPercentagePerWorker) {
-        this.markup = markupPercentagePerWorker.divide(ONE_HUNDRED);
+        if (markupPercentagePerWorker == null) throw new NullPointerException();
+        this.markupPercentagePerWorker = markupPercentagePerWorker;
     }
 
     @Override
     public void applyTo(Order order) {
-        BigDecimal totalMarkup  = markup.multiply(BigDecimal.valueOf(order.getWorkers()));
-        BigDecimal adjustment = order.getBaseValue().multiply(totalMarkup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
-        order.addToTotalValue(new ImmutableMoney(adjustment));
+        BigDecimal totalMarkup  = markupPercentagePerWorker.multiply(valueOf(order.getWorkers()));
+        order.addToTotalValue(order.getBaseValue().applyPercentage(totalMarkup));
     }
 
     @Override
@@ -30,7 +32,7 @@ public class LaborMarkupRule implements FinancialRule {
 
     @Override
     public String toString() {
-        return String.format("Labor markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
+        return String.format("Labor markup rule of %.2f percent",  markupPercentagePerWorker);
     }
 
     @Override
@@ -39,13 +41,13 @@ public class LaborMarkupRule implements FinancialRule {
         if (! (object instanceof LaborMarkupRule)) return false;
         LaborMarkupRule that = (LaborMarkupRule) object;
 
-        return this.markup.equals(that.markup);
+        return this.markupPercentagePerWorker.equals(that.markupPercentagePerWorker);
     }
 
     @Override
     public int hashCode() {
         int hash = 603;
-        hash = hash * 76 + markup.hashCode();
+        hash = hash * 76 + markupPercentagePerWorker.hashCode();
         return hash;
     }
 

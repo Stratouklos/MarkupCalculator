@@ -36,7 +36,7 @@ public class FlatMarkupRuleTest {
     public void testFivePercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(5));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
         verify(mockOrder).addToBaseValue(new ImmutableMoney("5"));
@@ -46,7 +46,7 @@ public class FlatMarkupRuleTest {
     public void testZeroPercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", ZERO);
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -57,7 +57,7 @@ public class FlatMarkupRuleTest {
     public void testMinusTenPercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(-10));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
         verify(mockOrder).addToBaseValue(new ImmutableMoney("-10"));
@@ -67,7 +67,7 @@ public class FlatMarkupRuleTest {
     public void testOneHundredAndTenPercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(110));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -78,7 +78,7 @@ public class FlatMarkupRuleTest {
     public void testThreeThousandPercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(3000));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -89,7 +89,7 @@ public class FlatMarkupRuleTest {
     public void testPointZeroOnePercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(0.01));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 
@@ -100,7 +100,7 @@ public class FlatMarkupRuleTest {
     public void testPointZeroZeroZeroOnePercent() {
         ruleUnderTest = ruleFactory.buildRule("markup", "flat", BigDecimal.valueOf(0.0001));
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
 
         ruleUnderTest.applyTo(mockOrder);
 

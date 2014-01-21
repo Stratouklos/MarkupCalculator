@@ -51,12 +51,12 @@ public class OrderWithTrails implements Order {
     }
 
     @Override
-    public BigDecimal getTotalValue() {
+    public Money getTotalValue() {
         return getBaseValue().add(addUp(adjustments));
     }
 
     @Override
-    public BigDecimal getBaseValue() {
+    public Money getBaseValue() {
         return addUp(baseValueAdjustments);
     }
 
@@ -70,12 +70,12 @@ public class OrderWithTrails implements Order {
         adjustments.add(valueToAdd);
     }
 
-    private BigDecimal addUp(Collection<Money> moneys) {
+    private Money addUp(Collection<Money> moneys) {
         Money total = new ImmutableMoney("0");
         for (Money money : moneys) {
             total = total.add(money);
         }
-        return total.getValue();
+        return total;
     }
 
     //Equals and hashcode implemented for testing reasons not necessary to be too strict

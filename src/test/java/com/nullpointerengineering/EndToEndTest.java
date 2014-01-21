@@ -66,5 +66,4 @@ public class EndToEndTest {
         assertThat(calculator.calculateTotalValue(orders.next()), is("$13707.63"));
     }
 
-
 }

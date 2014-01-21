@@ -9,7 +9,6 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.valueOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -37,7 +36,7 @@ public class FlatMarkupRuleTest {
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
         ruleUnderTest.applyTo(mockOrder);
-        verify(mockOrder).addToBaseValue(valueOf(5).setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("5"));
     }
 
     @Test
@@ -48,7 +47,7 @@ public class FlatMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToBaseValue(valueOf(0).setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("0"));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class FlatMarkupRuleTest {
         when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
 
         ruleUnderTest.applyTo(mockOrder);
-        verify(mockOrder).addToBaseValue(valueOf(-10).setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("-10"));
     }
 
     @Test
@@ -69,7 +68,7 @@ public class FlatMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToBaseValue(valueOf(110.01));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("110.01"));
     }
 
     @Test
@@ -80,7 +79,7 @@ public class FlatMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToBaseValue(valueOf(3000.30).setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("3000.30"));
     }
 
     @Test
@@ -91,7 +90,7 @@ public class FlatMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToBaseValue(valueOf(0.01).setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("0.01"));
     }
 
     @Test
@@ -102,7 +101,7 @@ public class FlatMarkupRuleTest {
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToBaseValue(ZERO.setScale(2));
+        verify(mockOrder).addToBaseValue(new ImmutableMoney("0"));
     }
 
     @Test

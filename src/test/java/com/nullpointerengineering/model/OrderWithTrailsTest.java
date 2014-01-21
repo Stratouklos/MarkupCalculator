@@ -33,7 +33,7 @@ public class OrderWithTrailsTest {
     @Test
     public void addBaseValueTest() {
         Order order = OrderWithTrails.newOrder("12223.22", 3, "food");
-        order.addToBaseValue(valueOf(0.78));
+        order.addToBaseValue(new ImmutableMoney("0.78"));
         assertThat(order.getBaseValue(), is(valueOf(12224.00).setScale(2)));
     }
 
@@ -41,7 +41,7 @@ public class OrderWithTrailsTest {
     public void addToTotalValueTest() {
         Order order = OrderWithTrails.newOrder("12223.22", 3, "food");
         order.addToTotalValue(valueOf(0.78));
-        order.addToBaseValue(valueOf(1.5));
+        order.addToBaseValue(new ImmutableMoney("1.5"));
         assertThat(order.getTotalValue(), is(valueOf(12225.50).setScale(2)));
     }
 
@@ -59,8 +59,8 @@ public class OrderWithTrailsTest {
     @Test
     public void addToBaseAndTotalValueManyTimesTest() {
         Order order = OrderWithTrails.newOrder("12223.22", 3, "food");
-        order.addToBaseValue(valueOf(0.78));
-        order.addToBaseValue(valueOf(1));
+        order.addToBaseValue(new ImmutableMoney("0.78"));
+        order.addToBaseValue(new ImmutableMoney("1"));
         order.addToTotalValue(valueOf(0.22));
         order.addToTotalValue(valueOf(0.11));
         order.addToTotalValue(valueOf(800.0));
@@ -97,10 +97,10 @@ public class OrderWithTrailsTest {
     @Test
     public void testHashFunction() {
         Order order1 = OrderWithTrails.newOrder("12223.22", 3, "food");
-        order1.addToBaseValue(valueOf(1));
+        order1.addToBaseValue(new ImmutableMoney("1"));
         order1.addToTotalValue(valueOf(0.22));
         Order order2 = OrderWithTrails.newOrder("12223.22", 3, "food");
-        order2.addToBaseValue(valueOf(1));
+        order2.addToBaseValue(new ImmutableMoney("1"));
         order2.addToTotalValue(valueOf(0.22));
 
         assertEquals(order1.hashCode(), order2.hashCode());
@@ -109,10 +109,10 @@ public class OrderWithTrailsTest {
     @Test
     public void testEqualsFunction() {
         Order order1 = OrderWithTrails.newOrder("12223.22", 1, "food");
-        order1.addToBaseValue(valueOf(3));
+        order1.addToBaseValue(new ImmutableMoney("3"));
         order1.addToTotalValue(valueOf(6.22));
         Order order2 = OrderWithTrails.newOrder("12223.22", 1, "food");
-        order2.addToBaseValue(valueOf(3));
+        order2.addToBaseValue(new ImmutableMoney("3"));
         order2.addToTotalValue(valueOf(6.22));
 
         assertEquals(order1, order2);

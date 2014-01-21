@@ -61,8 +61,8 @@ public class OrderWithTrails implements Order {
     }
 
     @Override
-    public void addToBaseValue(BigDecimal valueToAdd) {
-        baseValueAdjustments.add(new ImmutableMoney(valueToAdd));
+    public void addToBaseValue(Money moneyToAdd) {
+        baseValueAdjustments.add(moneyToAdd);
     }
 
     @Override

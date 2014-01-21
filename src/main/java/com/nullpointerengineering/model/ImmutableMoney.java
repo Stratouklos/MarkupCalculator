@@ -53,4 +53,21 @@ public class ImmutableMoney implements Money{
         return new ImmutableMoney(moreMoney.getValue().add(value));
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (! (object instanceof ImmutableMoney)) return false;
+        ImmutableMoney that = (ImmutableMoney) object;
+
+        return this.value.equals(that.getValue()) && this.currency.equals(that.getCurrency());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 92;
+        hash = hash * 12 + currency.hashCode();
+        hash = hash * 33 + value.hashCode();
+        return hash;
+    }
+
 }

@@ -9,7 +9,9 @@ import org.junit.runners.JUnit4;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -94,6 +96,13 @@ public class LaborMarkupRuleTest {
 
         assertEquals(rule1, rule2);
         assertEquals(rule2, rule1);
+    }
+
+    @Test
+    public void testToString() {
+        FinancialRule rule = ruleFactory.buildRule("markup", "labor", valueOf(5));
+
+        assertThat(rule.toString(), is("Labor markup rule of 5.00 percent"));
     }
 
 }

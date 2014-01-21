@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -117,4 +118,10 @@ public class ProductTypeMarkupRuleTest {
         ruleUnderTest = new ProductTypeMarkupRule(ONE, "  ");
     }
 
+    @Test
+    public void testToString() {
+        FinancialRule rule = ruleFactory.buildRule("markup", "pets", ONE);
+
+        assertThat(rule.toString(), is("Product type markup rule of 1.00 percent for pets"));
+    }
 }

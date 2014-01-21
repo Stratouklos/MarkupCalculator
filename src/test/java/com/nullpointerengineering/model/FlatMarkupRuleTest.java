@@ -9,7 +9,10 @@ import org.junit.runners.JUnit4;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -130,11 +133,17 @@ public class FlatMarkupRuleTest {
         assertEquals(rule2, rule1);
     }
 
-
     @Test
     public void testNullMarkupThrowsException() {
         expectedException.expect(NullPointerException.class);
         ruleUnderTest = new FlatMarkupRule(null);
+    }
+
+    @Test
+    public void testToString() {
+        FinancialRule rule = ruleFactory.buildRule("markup", "flat", valueOf(5));
+
+        assertThat(rule.toString(), is("Flat markup rule of 5.00 percent"));
     }
 
 }

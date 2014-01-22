@@ -14,17 +14,16 @@ import static com.google.common.base.Charsets.UTF_8;
 
 public class LaborMarkupRule implements FinancialRule {
 
-    private final BigDecimal markup;
+    private final BigDecimal markupPercentagePerWorker;
 
     public LaborMarkupRule(BigDecimal markupPercentagePerWorker) {
-        this.markup = markupPercentagePerWorker.divide(ONE_HUNDRED);
+        this.markupPercentagePerWorker = markupPercentagePerWorker.divide(ONE_HUNDRED);
     }
 
     @Override
     public void applyTo(Order order) {
-        BigDecimal totalMarkup  = markup.multiply(BigDecimal.valueOf(order.getWorkers()));
-        BigDecimal adjustment = order.getBaseValue().multiply(totalMarkup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
-        order.addToTotalValue(adjustment);
+        BigDecimal totalMarkup  = markupPercentagePerWorker.multiply(valueOf(order.getWorkers()));
+        order.addToTotalValue(order.getBaseValue().applyPercentage(totalMarkup));
     }
 
     @Override
@@ -34,7 +33,7 @@ public class LaborMarkupRule implements FinancialRule {
 
     @Override
     public String toString() {
-        return String.format("Labor markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
+        return String.format("Labor markup rule of %.2f percent",  markupPercentagePerWorker);
     }
 
     @Override
@@ -43,14 +42,14 @@ public class LaborMarkupRule implements FinancialRule {
         if (! (object instanceof LaborMarkupRule)) return false;
         LaborMarkupRule that = (LaborMarkupRule) object;
 
-        return this.markup.equals(that.markup);
+        return this.markupPercentagePerWorker.equals(that.markupPercentagePerWorker);
     }
 
     @Override
     public int hashCode() {
         return Hashing.md5()
                 .newHasher()
-                .putString(markup.toString(), UTF_8)
+                .putString(markupPercentagePerWorker.toString(), UTF_8)
                 .hash()
                 .asInt();
     }

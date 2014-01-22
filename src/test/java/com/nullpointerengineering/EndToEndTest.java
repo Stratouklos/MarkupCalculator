@@ -27,7 +27,6 @@ import static org.junit.Assert.assertThat;
 public class EndToEndTest {
 
     Collection<FinancialRule> rules;
-    ValueCalculator valueCalculator;
     @Before
     public void setup() throws IOException {
         rules = FluentIterable.from(
@@ -35,7 +34,6 @@ public class EndToEndTest {
                 .transform(new RuleParser(new FinancialRuleFactory()))
                 .toSortedList(FinancialRuleComparator.first(FlatMarkupRule.class));
 
-        valueCalculator = new ValueCalculator(rules);
 
     }
 
@@ -50,10 +48,10 @@ public class EndToEndTest {
             Files.asCharSource(new File(ONE_ORDER), UTF_8).readLines())
             .transform(new OrderParser())
             .filter(Predicates.notNull())
-            .transform(valueCalculator)
+            .transform()
             .iterator();
 
-        assertThat(orders.next().getPrintableTotalValue(), is("$1591.58"));
+        assertThat(orders.next().getTotalValue().toString(), is("$1591.58"));
     }
 
     @Test
@@ -63,10 +61,9 @@ public class EndToEndTest {
             .transform(new OrderParser())
             .filter(Predicates.notNull()).transform(valueCalculator)
             .iterator();
-
-        assertThat(orders.next().getPrintableTotalValue(), is("$1591.58"));
-        assertThat(orders.next().getPrintableTotalValue(), is("$6199.81"));
-        assertThat(orders.next().getPrintableTotalValue(), is("$13707.63"));
+        assertThat(orders.next().getTotalValue().toString(), is("$1591.58"));
+        assertThat(orders.next().getTotalValue().toString(), is("$6199.81"));
+        assertThat(orders.next().getTotalValue().toString(), is("$13707.63"));
     }
 
 }

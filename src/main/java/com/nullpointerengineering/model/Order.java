@@ -1,7 +1,5 @@
 package com.nullpointerengineering.model;
 
-import java.math.BigDecimal;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Stratos
@@ -11,10 +9,9 @@ public interface Order {
 
     int getWorkers();
     String getType();
-    BigDecimal getBaseValue();
-    BigDecimal getTotalValue();
-    String getPrintableTotalValue();
-    void addToBaseValue(BigDecimal valueToAdd);
-    void addToTotalValue(BigDecimal valueToAdd);
+    Money getBaseValue();
+    Money getTotalValue();
+    void addToBaseValue(Money valueToAdd);
+    void addToTotalValue(Money valueToAdd);
 
 }

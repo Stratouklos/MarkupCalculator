@@ -7,11 +7,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Matchers;
 
-import java.math.BigDecimal;
-
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.valueOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -25,7 +23,7 @@ public class ProductTypeMarkupRuleTest {
 
     FinancialRuleFactory ruleFactory = new FinancialRuleFactory();
     FinancialRule ruleUnderTest;
-    Order mockOrder = mock(OrderImpl.class);
+    Order mockOrder = mock(OrderWithTrails.class);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -33,36 +31,36 @@ public class ProductTypeMarkupRuleTest {
     @Test
     public void testMarkupForDrugs() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("drugs");
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney("1.00"));
     }
 
     @Test
     public void testMarkupForElectronics() {
         ruleUnderTest = ruleFactory.buildRule("markup", "electronics", ONE);
 
-        when(mockOrder.getBaseValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getBaseValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("ELECTRONICS");
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder).addToTotalValue(valueOf(1).setScale(2));
+        verify(mockOrder).addToTotalValue(new ImmutableMoney(ONE));
     }
 
     @Test
     public void testMarkupIsNotAppliedForOtherType() {
         ruleUnderTest = ruleFactory.buildRule("markup", "drugs", ONE);
 
-        when(mockOrder.getTotalValue()).thenReturn(BigDecimal.valueOf(100.01));
+        when(mockOrder.getTotalValue()).thenReturn(new ImmutableMoney("100.01"));
         when(mockOrder.getType()).thenReturn("pets");
 
         ruleUnderTest.applyTo(mockOrder);
 
-        verify(mockOrder, never()).addToTotalValue(Matchers.any(BigDecimal.class));
+        verify(mockOrder, never()).addToTotalValue(Matchers.any(Money.class));
     }
 
     @Test
@@ -85,8 +83,8 @@ public class ProductTypeMarkupRuleTest {
 
     @Test
     public void testHashCode() {
-        FinancialRule rule1 = ruleFactory.buildRule("markup", "drugs", ONE);
-        FinancialRule rule2 = ruleFactory.buildRule("markup", "drugs", ONE);
+        FinancialRule rule1 = ruleFactory.buildRule("markup", "pets", ONE);
+        FinancialRule rule2 = ruleFactory.buildRule("markup", "pets", ONE);
 
         assertEquals(rule1.hashCode(), rule2.hashCode());
     }
@@ -117,4 +115,10 @@ public class ProductTypeMarkupRuleTest {
         ruleUnderTest = new ProductTypeMarkupRule(ONE, "  ");
     }
 
+    @Test
+    public void testToString() {
+        FinancialRule rule = ruleFactory.buildRule("markup", "pets", ONE);
+
+        assertThat(rule.toString(), is("Product type markup rule of 1.00 percent for pets"));
+    }
 }

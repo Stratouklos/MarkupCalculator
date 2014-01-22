@@ -16,13 +16,13 @@ public class FlatMarkupRule implements FinancialRule {
     private final BigDecimal markup;
 
     public FlatMarkupRule(BigDecimal markupPercentage) {
-        this.markup = markupPercentage.divide(ONE_HUNDRED);
+        if (markupPercentage == null) throw new NullPointerException();
+        this.markup = markupPercentage;
     }
 
     @Override
     public void applyTo(Order order) {
-        BigDecimal baseValueAdjustment = order.getBaseValue().multiply(markup).setScale(RULE_SCALE, RULE_ROUNDING_MODE);
-        order.addToBaseValue(baseValueAdjustment);
+        order.addToBaseValue(order.getBaseValue().applyPercentage(markup));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FlatMarkupRule implements FinancialRule {
 
     @Override
     public String toString() {
-        return String.format("Flat markup rule of %s percent",  markup.multiply(ONE_HUNDRED).toPlainString());
+        return String.format("Flat markup rule of %.2f percent",  markup);
     }
 
     @Override

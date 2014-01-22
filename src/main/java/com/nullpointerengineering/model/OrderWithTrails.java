@@ -15,12 +15,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * User: Stratos
  * Order value object
  */
-public class OrderImpl implements Order {
+public class OrderWithTrails implements Order {
 
-    private BigDecimal baseValue;
     private final int workers;
     private final String type;
-    private final Collection<BigDecimal> adjustments = new LinkedList<>();
+    private final Collection<Money> baseValueAdjustments = new LinkedList<>();
+    private final Collection<Money> adjustments = new LinkedList<>();
 
     /**
      * Factory method for orders
@@ -35,14 +35,14 @@ public class OrderImpl implements Order {
      */
     public static Order newOrder(String valueString, int workers, String type) {
         checkArgument(!(workers <= 0), "The number of workers cannot be zero or bellow");
-        BigDecimal orderValue = new BigDecimal(valueString);
-        return new OrderImpl(orderValue, workers, checkNotNull(type, "Order type cannot be null"));
+        Money orderValue = new ImmutableMoney(valueString);
+        return new OrderWithTrails(orderValue, workers, checkNotNull(type, "Order type cannot be null"));
     }
 
-    private OrderImpl(BigDecimal baseValue, int workers, String type){
+    private OrderWithTrails(Money baseValue, int workers, String type){
         this.type = type;
         this.workers = workers;
-        this.baseValue = baseValue;
+        baseValueAdjustments.add(baseValue);
     }
 
     @Override
@@ -56,38 +56,38 @@ public class OrderImpl implements Order {
     }
 
     @Override
-    public BigDecimal getTotalValue() {
-        BigDecimal totalValue = BigDecimal.ZERO.add(baseValue);
-        for (BigDecimal adjustment : adjustments) {
-            totalValue = totalValue.add(adjustment);
-        }
-        return totalValue;
+    public Money getTotalValue() {
+        return getBaseValue().add(addUp(adjustments));
     }
 
     @Override
-    public String getPrintableTotalValue() {
-        return String.format("$%(.2f", this.getTotalValue());
+    public Money getBaseValue() {
+        return addUp(baseValueAdjustments);
     }
 
     @Override
-    public BigDecimal getBaseValue() {
-        return baseValue;
+    public void addToBaseValue(Money moneyToAdd) {
+        baseValueAdjustments.add(moneyToAdd);
     }
 
     @Override
-    public void addToBaseValue(BigDecimal valueToAdd) {
-        baseValue = baseValue.add(valueToAdd);
-    }
-
-    @Override
-    public void addToTotalValue(BigDecimal valueToAdd) {
+    public void addToTotalValue(Money valueToAdd) {
         adjustments.add(valueToAdd);
     }
 
+    private Money addUp(Collection<Money> moneys) {
+        Money total = new ImmutableMoney("0");
+        for (Money money : moneys) {
+            total = total.add(money);
+        }
+        return total;
+    }
+
+    //Equals and hashcode implemented for testing reasons not necessary to be too strict
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (! (object instanceof OrderImpl)) return false;
+        if (! (object instanceof OrderWithTrails)) return false;
         Order that = (Order) object;
 
         return this.getType().equals(that.getType()) &&
